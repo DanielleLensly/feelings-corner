@@ -474,3 +474,4 @@ export default function RoomShowcase() {
     </div>
   );
 }
+

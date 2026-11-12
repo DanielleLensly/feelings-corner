@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Heart, Sparkles, Shield, CheckCircle, Package, ArrowRight, MessageSquare, Star } from 'lucide-react';
 import RoomShowcase from './components/RoomShowcase';
 import InquiryModal from './components/InquiryModal';
+import Logo from './components/Logo';
 
 export default function App() {
   const [inquiryOpen, setInquiryOpen] = useState(false);
@@ -22,36 +23,7 @@ export default function App() {
         gap: '16px',
         boxSizing: 'border-box'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{
-            width: '46px',
-            height: '46px',
-            borderRadius: '50%',
-            backgroundColor: '#E8F1EB',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '1.6rem',
-            border: '2px solid #9BB7A5',
-            boxShadow: '0 4px 12px rgba(155, 183, 165, 0.25)'
-          }}>
-            🌸
-          </div>
-          <div>
-            <div style={{
-              fontSize: '1.45rem',
-              fontWeight: 800,
-              color: '#344E41',
-              letterSpacing: '-0.02em',
-              margin: 0
-            }}>
-              CALMING CORNER
-            </div>
-            <div style={{ fontSize: '0.84rem', color: '#6A8275', fontWeight: 600 }}>
-              The Emotional Regulation & Co-Regulation Room Kit
-            </div>
-          </div>
-        </div>
+        <Logo size={50} showText={true} />
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <button
@@ -426,12 +398,17 @@ export default function App() {
         padding: '24px 20px',
         textAlign: 'center',
         fontSize: '0.88rem',
-        color: '#6F8479'
+        color: '#6F8479',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '8px'
       }}>
-        <div>
-          🌸 <strong>Calming Corner</strong> • Thoughtfully designed for emotional regulation and gentle co-regulation.
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}>
+          <Logo size={24} animated={false} />
+          <span><strong>Calming Corner</strong> • Thoughtfully designed for emotional regulation and gentle co-regulation.</span>
         </div>
-        <div style={{ fontSize: '0.8rem', color: '#91A59A', marginTop: '4px' }}>
+        <div style={{ fontSize: '0.8rem', color: '#91A59A' }}>
           All rights reserved © 2026.
         </div>
       </footer>
