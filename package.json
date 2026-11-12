@@ -1,0 +1,21 @@
+{
+  "name": "calming-corner",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Interactive and responsive Calming Corner web application for kids and caregivers",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "canvas-confetti": "^1.9.4",
+    "lucide-react": "^1.72.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.3.0",
+    "vite": "^8.3.8"
+  }
+}
