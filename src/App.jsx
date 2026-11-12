@@ -23,7 +23,7 @@ export default function App() {
         gap: '16px',
         boxSizing: 'border-box'
       }}>
-        <Logo size={50} showText={true} />
+        <Logo size={52} showText={true} allowDownload={true} />
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <button
@@ -405,10 +405,19 @@ export default function App() {
         gap: '8px'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}>
-          <Logo size={24} animated={false} />
+          <Logo size={28} showText={false} />
           <span><strong>Calming Corner</strong> • Thoughtfully designed for emotional regulation and gentle co-regulation.</span>
         </div>
-        <div style={{ fontSize: '0.8rem', color: '#91A59A' }}>
+        <div style={{ display: 'flex', gap: '14px', fontSize: '0.82rem', marginTop: '4px' }}>
+          <a href="/assets/calming-corner-logo.svg" target="_blank" rel="noopener noreferrer" style={{ color: '#593E7C', fontWeight: 700, textDecoration: 'none' }}>
+            🖨️ Printable Logo Badge (Vector SVG)
+          </a>
+          <span style={{ color: '#C0B7A8' }}>•</span>
+          <a href="/assets/calming-corner-logo-horizontal.svg" target="_blank" rel="noopener noreferrer" style={{ color: '#235A42', fontWeight: 700, textDecoration: 'none' }}>
+            🖨️ Horizontal Print Banner (Vector SVG)
+          </a>
+        </div>
+        <div style={{ fontSize: '0.8rem', color: '#91A59A', marginTop: '2px' }}>
           All rights reserved © 2026.
         </div>
       </footer>
