@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 200" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 200" width="100%" height="100%">
   <!-- Calming Corner Horizontal Print-Ready Vector Logo -->
   <g transform="translate(15, -45) scale(0.65)">
     <!-- FIRST 'C' (Purple: Calming) -->
@@ -51,12 +51,12 @@
   </g>
 
   <!-- Typography Right Side -->
-  <g transform="translate(320, 105)" font-family="'Fredoka', 'Quicksand', 'Nunito', sans-serif">
-    <text x="0" y="0" font-size="46" font-weight="800">
+  <g transform="translate(320, 105)" font-family="'Fredoka', 'Quicksand', 'Nunito', 'Segoe UI', system-ui, sans-serif">
+    <text x="0" y="0" font-size="44" font-weight="800">
       <tspan fill="#593E7C">CALMING </tspan>
       <tspan fill="#235A42">CORNER</tspan>
     </text>
-    <text x="2" y="32" font-size="16" font-weight="600" fill="#6A8074" letter-spacing="2">
+    <text x="2" y="32" font-size="15" font-weight="700" fill="#6A8074" letter-spacing="2">
       THE CO-REGULATION ROOM KIT
     </text>
   </g>
