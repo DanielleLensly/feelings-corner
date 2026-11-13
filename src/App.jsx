@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Heart, Sparkles, Shield, CheckCircle, Package, ArrowRight, MessageSquare, Star } from 'lucide-react';
+import { Heart, Sparkles, Shield, CheckCircle, Package, ArrowRight, MessageSquare, Star, Palette } from 'lucide-react';
 import RoomShowcase from './components/RoomShowcase';
 import InquiryModal from './components/InquiryModal';
 import Logo from './components/Logo';
+import TextColorizerTool from './components/TextColorizerTool';
 
 export default function App() {
   const [inquiryOpen, setInquiryOpen] = useState(false);
+  const [showColorizer, setShowColorizer] = useState(false);
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: '#FAF7F2' }}>
@@ -26,6 +28,28 @@ export default function App() {
         <Logo size={52} showText={true} allowDownload={true} />
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <button
+            onClick={() => setShowColorizer(!showColorizer)}
+            style={{
+              padding: '9px 18px',
+              borderRadius: '24px',
+              backgroundColor: showColorizer ? '#FAF6F0' : '#ffffff',
+              border: showColorizer ? '2px solid #344E41' : '1.5px solid #D6CCBE',
+              color: '#344E41',
+              fontWeight: 700,
+              fontSize: '0.88rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              cursor: 'pointer',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+              transition: 'all 0.2s ease'
+            }}
+          >
+            <Palette size={16} color="#85CBA8" />
+            <span>{showColorizer ? 'Hide Title Colorizer' : '🎨 Title Colorizer Tool'}</span>
+          </button>
+
           <button
             onClick={() => setInquiryOpen(true)}
             className="calm-btn"
@@ -96,6 +120,13 @@ export default function App() {
         <div style={{ marginBottom: '40px' }}>
           <RoomShowcase />
         </div>
+
+        {/* Artwork Title Colorizer Tool */}
+        {showColorizer && (
+          <div style={{ margin: '30px 0 50px 0', animation: 'fadeIn 0.3s ease' }}>
+            <TextColorizerTool onClose={() => setShowColorizer(false)} />
+          </div>
+        )}
       </section>
 
       {/* Product Overview: What Is The Calming Corner? */}

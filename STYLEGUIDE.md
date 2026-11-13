@@ -132,3 +132,4 @@ Before approving any new Calming Corner art piece, verify:
 - [ ] Does the font hierarchy use *Fredoka* for bold titles and *Quicksand* for gentle guidance?
 - [ ] Are facial features calm and reassuring (closed smiling/peaceful eyes, soft blush)?
 - [ ] Is the artwork tactile and interactive (elements children can point to, count, or trace)?
+
