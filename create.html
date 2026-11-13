@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calming Corner • Poster & Artwork Creator Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700;800&family=Patrick+Hand&family=Quicksand:wght@400;500;600;700&family=Short+Stack&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --font-fredoka: 'Fredoka', sans-serif;
+      --font-patrick: 'Patrick Hand', cursive;
+      --font-quicksand: 'Quicksand', sans-serif;
+      --font-shortstack: 'Short Stack', cursive;
+      
+      --color-cream: #FAF6F0;
+      --color-dark: #2F3E46;
+      --color-forest: #344E41;
+      --color-sage: #85CBA8;
+      --color-purple: #B8A2D8;
+      --color-border: #E5DFD5;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-quicksand);
+      background-color: #F4EFEB;
+      background-image: radial-gradient(#d3c8ba 1px, transparent 1px);
+      background-size: 24px 24px;
+      color: var(--color-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Studio Bar */
+    header {
+      background: #FFFFFF;
+      border-bottom: 2px solid var(--color-border);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justifyContent: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.03);
+    }
+
+    .brand-mark {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-mark h1 {
+      font-family: var(--font-fredoka);
+      font-size: 1.35rem;
+      color: var(--color-forest);
+      letter-spacing: -0.01em;
+    }
+
+    .brand-mark span {
+      font-size: 0.82rem;
+      color: #657E72;
+      font-weight: 600;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* Main Workspace Layout */
+    .workspace {
+      display: grid;
+      grid-template-columns: 440px 1fr;
+      flex: 1;
+      min-height: calc(100vh - 66px);
+    }
+
+    @media (max-width: 1024px) {
+      .workspace {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Left Control Sidebar */
+    .sidebar {
+      background: #FFFFFF;
+      border-right: 2px solid var(--color-border);
+      padding: 24px 20px;
+      overflow-y: auto;
+      height: calc(100vh - 66px);
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .control-section {
+      background: #FAF8F5;
+      border: 1.5px solid var(--color-border);
+      border-radius: 18px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .section-title {
+      font-family: var(--font-fredoka);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--color-forest);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #4D6156;
+      margin-bottom: 4px;
+    }
+
+    input[type="text"], textarea, select {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1.5px solid #D5CEC2;
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+      background: #FFFFFF;
+      color: #2F3E46;
+    }
+
+    input[type="text"]:focus, textarea:focus, select:focus {
+      border-color: var(--color-forest);
+    }
+
+    .range-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .range-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #4D6156;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--color-forest);
+    }
+
+    /* Button Styles */
+    button {
+      font-family: var(--font-fredoka);
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 9px 16px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    button:active { transform: scale(0.97); }
+
+    .btn-primary {
+      background: var(--color-forest);
+      color: #FFFFFF;
+      box-shadow: 0 4px 12px rgba(52, 78, 65, 0.2);
+    }
+    .btn-secondary {
+      background: var(--color-sage);
+      color: #17422E;
+    }
+    .btn-outline {
+      background: #FFFFFF;
+      border: 1.5px solid #D5CEC2;
+      color: #384D42;
+    }
+    .btn-outline:hover {
+      background: #F4EFEB;
+    }
+
+    .btn-pill {
+      padding: 5px 12px;
+      font-size: 0.78rem;
+      border-radius: 14px;
+      background: #FFFFFF;
+      border: 1.5px solid #DCD5C9;
+      color: #4D6156;
+    }
+    .btn-pill.active {
+      background: var(--color-forest);
+      color: #FFFFFF;
+      border-color: var(--color-forest);
+    }
+
+    /* Right Preview Stage */
+    .preview-stage {
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      overflow-y: auto;
+      height: calc(100vh - 66px);
+    }
+
+    /* The Poster Canvas Frame */
+    .poster-canvas {
+      width: 100%;
+      max-width: 620px;
+      aspect-ratio: 1 / 1.414; /* A4 aspect ratio */
+      background: var(--color-cream);
+      border-radius: 16px;
+      box-shadow: 0 18px 45px rgba(50, 60, 55, 0.15), 0 2px 8px rgba(0,0,0,0.06);
+      border: 2px solid #E6DED4;
+      padding: 40px 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    .poster-canvas.square {
+      aspect-ratio: 1 / 1;
+      max-width: 540px;
+    }
+
+    .poster-canvas.landscape {
+      aspect-ratio: 1.414 / 1;
+      max-width: 760px;
+    }
+
+    /* Canvas Internal Poster Elements */
+    .poster-title-wrap {
+      width: 100%;
+      line-height: 1.15;
+      word-break: break-word;
+      margin-bottom: 8px;
+    }
+
+    .poster-subtitle {
+      font-family: var(--font-patrick);
+      color: #4A3930;
+      line-height: 1.25;
+      margin-bottom: 24px;
+      word-break: break-word;
+      transition: all 0.2s ease;
+    }
+
+    .poster-section-heading {
+      font-family: var(--font-fredoka);
+      font-weight: 800;
+      color: #38251B;
+      letter-spacing: 0.04em;
+      margin-bottom: 18px;
+      line-height: 1.2;
+      word-break: break-word;
+      transition: all 0.2s ease;
+    }
+
+    .poster-image-container {
+      flex: 1;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 150px;
+      position: relative;
+      margin: 8px 0;
+    }
+
+    .poster-image {
+      max-width: 100%;
+      max-height: 380px;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.06));
+      transition: all 0.2s ease;
+    }
+
+    .poster-footer-note {
+      margin-top: auto;
+      font-family: var(--font-quicksand);
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: #6C8275;
+      padding-top: 12px;
+      border-top: 1.5px dashed rgba(0,0,0,0.08);
+      width: 90%;
+    }
+
+    /* Asset Grid in Sidebar */
+    .asset-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      max-height: 190px;
+      overflow-y: auto;
+      padding: 4px;
+    }
+
+    .asset-thumb {
+      aspect-ratio: 1;
+      border-radius: 10px;
+      border: 2px solid #E2DCD2;
+      background: #FFFFFF;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      transition: all 0.15s ease;
+    }
+
+    .asset-thumb:hover {
+      border-color: var(--color-forest);
+      transform: scale(1.05);
+    }
+
+    .asset-thumb.active {
+      border-color: var(--color-forest);
+      background: #E8F1EB;
+      box-shadow: 0 0 0 2px var(--color-forest);
+    }
+
+    .asset-thumb img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    /* Print Styles */
+    @media print {
+      body { background: #FFFFFF; padding: 0; }
+      header, .sidebar { display: none !important; }
+      .workspace { display: block; }
+      .preview-stage { padding: 0; height: auto; }
+      .poster-canvas {
+        max-width: 100% !important;
+        box-shadow: none !important;
+        border: none !important;
+        border-radius: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Studio Bar -->
+  <header>
+    <div class="brand-mark">
+      <div style="font-size: 1.6rem; line-height: 1;">🌸</div>
+      <div>
+        <h1>Calming Corner • Artwork Studio</h1>
+        <span>Compose, colorize & print custom posters with matching fonts and illustrations</span>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button class="btn-outline" onclick="window.print()">
+        <span>🖨️ Print Poster</span>
+      </button>
+      <button class="btn-secondary" onclick="exportPng()">
+        <span>📸 Download 300 DPI PNG</span>
+      </button>
+      <button class="btn-primary" onclick="exportSvg()">
+        <span>📥 Download Vector SVG</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Workspace -->
+  <div class="workspace">
+    
+    <!-- Left Controls Panel -->
+    <div class="sidebar">
+
+      <!-- Preset Templates -->
+      <div class="control-section">
+        <div class="section-title">✨ Quick Poster Templates</div>
+        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+          <button class="btn-pill active" onclick="loadTemplate('breathe')">Breathe With Me</button>
+          <button class="btn-pill" onclick="loadTemplate('feelings')">How Am I Feeling?</button>
+          <button class="btn-pill" onclick="loadTemplate('toolbox')">Calm Down Toolbox</button>
+          <button class="btn-pill" onclick="loadTemplate('ground')">Find Your Ground</button>
+          <button class="btn-pill" onclick="loadTemplate('needs')">What Do I Need?</button>
+        </div>
+      </div>
+
+      <!-- 1. Rainbow Header Title (Letter by Letter) -->
+      <div class="control-section">
+        <div class="section-title">🎨 Title (Letter-by-Letter Colored)</div>
+        
+        <div>
+          <label for="inputTitle">Title Text:</label>
+          <input type="text" id="inputTitle" value="BREATHE WITH ME" oninput="updatePoster()" />
+        </div>
+
+        <div>
+          <label for="selectPalette">Color Sequence:</label>
+          <select id="selectPalette" onchange="updatePoster()">
+            <option value="posterOriginal">Poster Original Palette (Peach, Yellow, Sage, Sky, Lilac, Rose)</option>
+            <option value="emotions">8 Emotion Rainbow (Yellow, Blue, Violet, Teal, Rose, Red, Sage, Apricot)</option>
+            <option value="duo">Brand Duo (Hug Purple & Talk Mint)</option>
+            <option value="warm">Warm Sunshine & Earth (Terracotta, Ochre, Sage)</option>
+          </select>
+        </div>
+
+        <div class="range-group">
+          <div class="range-header">
+            <span>Font Size: <span id="labelTitleSize">52px</span></span>
+          </div>
+          <input type="range" id="rangeTitleSize" min="28" max="80" value="52" oninput="updatePoster()" />
+        </div>
+
+        <div class="range-group">
+          <div class="range-header">
+            <span>Letter Spacing: <span id="labelTitleSpace">4px</span></span>
+          </div>
+          <input type="range" id="rangeTitleSpace" min="0" max="16" value="4" oninput="updatePoster()" />
+        </div>
+      </div>
+
+      <!-- 2. Subtitle / Instruction (Patrick Hand Style) -->
+      <div class="control-section">
+        <div class="section-title">✍️ Subtitle / Instruction</div>
+        
+        <div>
+          <label for="inputSubtitle">Subtitle Text:</label>
+          <input type="text" id="inputSubtitle" value="Trace along the path with your finger" oninput="updatePoster()" />
+        </div>
+
+        <div>
+          <label for="selectSubtitleFont">Subtitle Font:</label>
+          <select id="selectSubtitleFont" onchange="updatePoster()">
+            <option value="var(--font-patrick)">Patrick Hand (Handwritten - like original poster)</option>
+            <option value="var(--font-quicksand)">Quicksand (Soft Rounded)</option>
+            <option value="var(--font-fredoka)">Fredoka (Chubby Casual)</option>
+            <option value="var(--font-shortstack)">Short Stack (Child Print)</option>
+          </select>
+        </div>
+
+        <div class="range-group">
+          <div class="range-header">
+            <span>Subtitle Size: <span id="labelSubSize">28px</span></span>
+          </div>
+          <input type="range" id="rangeSubSize" min="16" max="42" value="28" oninput="updatePoster()" />
+        </div>
+
+        <div>
+          <label for="inputSubtitleColor">Text Color:</label>
+          <input type="color" id="inputSubtitleColor" value="#4A3930" onchange="updatePoster()" style="height: 38px; padding: 2px 4px;" />
+        </div>
+      </div>
+
+      <!-- 3. Section Heading -->
+      <div class="control-section">
+        <div class="section-title">🏷️ Section Heading (Optional)</div>
+        
+        <div>
+          <label for="inputSectionHeading">Section Text:</label>
+          <input type="text" id="inputSectionHeading" value="INFINITY BREATHING" oninput="updatePoster()" />
+        </div>
+
+        <div class="range-group">
+          <div class="range-header">
+            <span>Heading Size: <span id="labelHeadSize">32px</span></span>
+          </div>
+          <input type="range" id="rangeHeadSize" min="18" max="52" value="32" oninput="updatePoster()" />
+        </div>
+
+        <div>
+          <label for="inputHeadingColor">Heading Color:</label>
+          <input type="color" id="inputHeadingColor" value="#38251B" onchange="updatePoster()" style="height: 38px; padding: 2px 4px;" />
+        </div>
+      </div>
+
+      <!-- 4. Graphic / Image Layer -->
+      <div class="control-section">
+        <div class="section-title">🖼️ Add Image / Illustration</div>
+        
+        <label>Pick from Calming Corner Library:</label>
+        <div class="asset-grid" id="assetGrid">
+          <!-- Populated by JavaScript -->
+        </div>
+
+        <div style="margin-top: 8px;">
+          <label for="uploadCustomImage">Or Upload Any Image from Your Computer:</label>
+          <input type="file" id="uploadCustomImage" accept="image/*" onchange="handleCustomUpload(event)" />
+        </div>
+
+        <div class="range-group" style="margin-top: 6px;">
+          <div class="range-header">
+            <span>Image Size: <span id="labelImgSize">260px</span></span>
+          </div>
+          <input type="range" id="rangeImgSize" min="100" max="440" value="260" oninput="updatePoster()" />
+        </div>
+      </div>
+
+      <!-- 5. Canvas Settings -->
+      <div class="control-section">
+        <div class="section-title">📐 Canvas & Paper Settings</div>
+        
+        <div>
+          <label>Poster Ratio / Dimensions:</label>
+          <div style="display: flex; gap: 6px;">
+            <button class="btn-pill active" id="btnRatioA4" onclick="setRatio('a4')">A4 Portrait</button>
+            <button class="btn-pill" id="btnRatioSquare" onclick="setRatio('square')">Square</button>
+            <button class="btn-pill" id="btnRatioLandscape" onclick="setRatio('landscape')">Landscape</button>
+          </div>
+        </div>
+
+        <div style="margin-top: 6px;">
+          <label for="selectPaperBg">Paper Background:</label>
+          <select id="selectPaperBg" onchange="updatePoster()">
+            <option value="#FAF6F0">Warm Oatmeal Cream (#FAF6F0 - Original)</option>
+            <option value="#FFFFFF">Pure Crisp White (#FFFFFF)</option>
+            <option value="#EFF7FC">Gentle Sky Tint (#EFF7FC)</option>
+            <option value="#EEF7F2">Gentle Sage Tint (#EEF7F2)</option>
+            <option value="#FDF2F4">Tender Rose Tint (#FDF2F4)</option>
+          </select>
+        </div>
+
+        <div style="margin-top: 6px;">
+          <label for="inputFooterNote">Footer Note (Optional):</label>
+          <input type="text" id="inputFooterNote" value="🌸 Calming Corner • Safe Space For Big Feelings" oninput="updatePoster()" />
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right Live Preview Canvas -->
+    <div class="preview-stage">
+      <div class="poster-canvas" id="posterCanvas">
+        <!-- 1. Rainbow Header Title -->
+        <div class="poster-title-wrap" id="posterTitle"></div>
+
+        <!-- 2. Subtitle / Directive -->
+        <div class="poster-subtitle" id="posterSubtitle"></div>
+
+        <!-- 3. Section Heading -->
+        <div class="poster-section-heading" id="posterHeading"></div>
+
+        <!-- 4. Graphic / Illustration Container -->
+        <div class="poster-image-container" id="posterImageContainer">
+          <img id="posterImage" class="poster-image" src="" alt="Poster Illustration" style="display: none;" />
+        </div>
+
+        <!-- 5. Footer Note -->
+        <div class="poster-footer-note" id="posterFooter"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Palettes for letter-by-letter coloring
+    const PALETTES = {
+      posterOriginal: ['#F1A990', '#EDD287', '#9BB7A5', '#8AB7D8', '#BCAADB', '#E6A5AF'],
+      emotions: ['#F9D859', '#6AAFE6', '#B68FD0', '#62B6B7', '#E89AA7', '#E86663', '#84B896', '#F49B55'],
+      duo: ['#B8A2D8', '#85CBA8'],
+      warm: ['#E07A5F', '#EDD287', '#84B896', '#D88467', '#A29060']
+    };
+
+    // Built-in library assets
+    const LIBRARY_ASSETS = [
+      { id: 'happy', name: 'Happy Face', src: '/assets/faces/happy.png' },
+      { id: 'calm', name: 'Calm Face', src: '/assets/faces/calm.png' },
+      { id: 'sad', name: 'Sad Face', src: '/assets/faces/sad.png' },
+      { id: 'worried', name: 'Worried Face', src: '/assets/faces/worried.png' },
+      { id: 'angry', name: 'Angry Face', src: '/assets/faces/angry.png' },
+      { id: 'excited', name: 'Excited Face', src: '/assets/faces/excited.png' },
+      { id: 'silly', name: 'Silly Face', src: '/assets/faces/silly.png' },
+      { id: 'tired', name: 'Tired Face', src: '/assets/faces/tired.png' },
+      { id: 'breathe-path', name: 'Infinity Path', src: '/assets/posters/breathe with me.jpg' },
+      { id: 'stickers', name: 'Sticker Badges', src: '/assets/emotional-regulation-light.jpg' }
+    ];
+
+    let currentImageSrc = '/assets/faces/calm.png';
+    let currentRatio = 'a4';
+
+    // Populate asset grid
+    function initAssetGrid() {
+      const grid = document.getElementById('assetGrid');
+      grid.innerHTML = '';
+
+      LIBRARY_ASSETS.forEach(item => {
+        const thumb = document.createElement('div');
+        thumb.className = `asset-thumb ${item.src === currentImageSrc ? 'active' : ''}`;
+        thumb.title = item.name;
+        thumb.onclick = () => {
+          document.querySelectorAll('.asset-thumb').forEach(t => t.classList.remove('active'));
+          thumb.classList.add('active');
+          currentImageSrc = item.src;
+          updatePoster();
+        };
+
+        const img = document.createElement('img');
+        img.src = item.src;
+        img.alt = item.name;
+        thumb.appendChild(img);
+        grid.appendChild(thumb);
+      });
+    }
+
+    // Handle user image upload
+    function handleCustomUpload(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          currentImageSrc = event.target.result;
+          document.querySelectorAll('.asset-thumb').forEach(t => t.classList.remove('active'));
+          updatePoster();
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    // Set Ratio
+    function setRatio(ratio) {
+      currentRatio = ratio;
+      const canvas = document.getElementById('posterCanvas');
+      canvas.className = `poster-canvas ${ratio === 'square' ? 'square' : ratio === 'landscape' ? 'landscape' : ''}`;
+      
+      document.getElementById('btnRatioA4').className = `btn-pill ${ratio === 'a4' ? 'active' : ''}`;
+      document.getElementById('btnRatioSquare').className = `btn-pill ${ratio === 'square' ? 'active' : ''}`;
+      document.getElementById('btnRatioLandscape').className = `btn-pill ${ratio === 'landscape' ? 'active' : ''}`;
+    }
+
+    // Quick Templates
+    function loadTemplate(key) {
+      document.querySelectorAll('.btn-pill').forEach(b => {
+        if (b.innerText.toLowerCase().includes(key)) b.classList.add('active');
+      });
+
+      if (key === 'breathe') {
+        document.getElementById('inputTitle').value = 'BREATHE WITH ME';
+        document.getElementById('inputSubtitle').value = 'Trace along the path with your finger';
+        document.getElementById('inputSectionHeading').value = 'INFINITY BREATHING';
+        document.getElementById('selectPalette').value = 'posterOriginal';
+        currentImageSrc = '/assets/posters/breathe with me.jpg';
+      } else if (key === 'feelings') {
+        document.getElementById('inputTitle').value = 'HOW AM I FEELING RIGHT NOW?';
+        document.getElementById('inputSubtitle').value = 'Point to the face that matches what you feel inside';
+        document.getElementById('inputSectionHeading').value = 'TODAY I FEEL...';
+        document.getElementById('selectPalette').value = 'emotions';
+        currentImageSrc = '/assets/faces/happy.png';
+      } else if (key === 'toolbox') {
+        document.getElementById('inputTitle').value = 'MY CALM DOWN TOOLBOX';
+        document.getElementById('inputSubtitle').value = 'Pick one thing to try with your body';
+        document.getElementById('inputSectionHeading').value = 'TAKE A DEEP RESET';
+        document.getElementById('selectPalette').value = 'warm';
+        currentImageSrc = '/assets/faces/calm.png';
+      } else if (key === 'ground') {
+        document.getElementById('inputTitle').value = 'FIND YOUR GROUND';
+        document.getElementById('inputSubtitle').value = 'When your brain feels stormy, use your senses';
+        document.getElementById('inputSectionHeading').value = '5 - 4 - 3 - 2 - 1 RESET';
+        document.getElementById('selectPalette').value = 'emotions';
+        currentImageSrc = '/assets/faces/calm.png';
+      } else if (key === 'needs') {
+        document.getElementById('inputTitle').value = 'WHAT DO I NEED RIGHT NOW?';
+        document.getElementById('inputSubtitle').value = 'Point to what will help your heart feel better';
+        document.getElementById('inputSectionHeading').value = 'I WOULD LIKE...';
+        document.getElementById('selectPalette').value = 'duo';
+        currentImageSrc = '/assets/faces/happy.png';
+      }
+
+      initAssetGrid();
+      updatePoster();
+    }
+
+    // Update Live Poster Elements
+    function updatePoster() {
+      // 1. Rainbow Title
+      const rawTitle = document.getElementById('inputTitle').value.toUpperCase();
+      const paletteKey = document.getElementById('selectPalette').value;
+      const colors = PALETTES[paletteKey];
+      const titleSize = document.getElementById('rangeTitleSize').value;
+      const titleSpace = document.getElementById('rangeTitleSpace').value;
+
+      document.getElementById('labelTitleSize').innerText = `${titleSize}px`;
+      document.getElementById('labelTitleSpace').innerText = `${titleSpace}px`;
+
+      const titleEl = document.getElementById('posterTitle');
+      titleEl.style.fontSize = `${titleSize}px`;
+      titleEl.style.letterSpacing = `${titleSpace}px`;
+      titleEl.style.fontFamily = 'var(--font-fredoka)';
+      titleEl.style.fontWeight = '800';
+
+      let titleHtml = '';
+      let colorIdx = 0;
+      for (let i = 0; i < rawTitle.length; i++) {
+        const char = rawTitle[i];
+        if (char === ' ') {
+          titleHtml += '&nbsp;';
+        } else {
+          const col = colors[colorIdx % colors.length];
+          titleHtml += `<span style="color: ${col};">${char}</span>`;
+          colorIdx++;
+        }
+      }
+      titleEl.innerHTML = titleHtml;
+
+      // 2. Subtitle
+      const rawSub = document.getElementById('inputSubtitle').value;
+      const subFont = document.getElementById('selectSubtitleFont').value;
+      const subSize = document.getElementById('rangeSubSize').value;
+      const subColor = document.getElementById('inputSubtitleColor').value;
+
+      document.getElementById('labelSubSize').innerText = `${subSize}px`;
+
+      const subEl = document.getElementById('posterSubtitle');
+      subEl.innerText = rawSub;
+      subEl.style.fontFamily = subFont;
+      subEl.style.fontSize = `${subSize}px`;
+      subEl.style.color = subColor;
+      subEl.style.display = rawSub.trim() ? 'block' : 'none';
+
+      // 3. Section Heading
+      const rawHead = document.getElementById('inputSectionHeading').value.toUpperCase();
+      const headSize = document.getElementById('rangeHeadSize').value;
+      const headColor = document.getElementById('inputHeadingColor').value;
+
+      document.getElementById('labelHeadSize').innerText = `${headSize}px`;
+
+      const headEl = document.getElementById('posterHeading');
+      headEl.innerText = rawHead;
+      headEl.style.fontSize = `${headSize}px`;
+      headEl.style.color = headColor;
+      headEl.style.display = rawHead.trim() ? 'block' : 'none';
+
+      // 4. Image
+      const imgEl = document.getElementById('posterImage');
+      const imgSize = document.getElementById('rangeImgSize').value;
+      document.getElementById('labelImgSize').innerText = `${imgSize}px`;
+
+      if (currentImageSrc) {
+        imgEl.src = currentImageSrc;
+        imgEl.style.maxHeight = `${imgSize}px`;
+        imgEl.style.display = 'block';
+      } else {
+        imgEl.style.display = 'none';
+      }
+
+      // 5. Paper Background & Footer
+      const paperBg = document.getElementById('selectPaperBg').value;
+      document.getElementById('posterCanvas').style.backgroundColor = paperBg;
+
+      const footerText = document.getElementById('inputFooterNote').value;
+      const footerEl = document.getElementById('posterFooter');
+      footerEl.innerText = footerText;
+      footerEl.style.display = footerText.trim() ? 'block' : 'none';
+    }
+
+    // Export as High-Res 300 DPI PNG
+    function exportPng() {
+      const poster = document.getElementById('posterCanvas');
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      const scale = 3; // 300 DPI high-definition scale
+
+      const w = poster.offsetWidth;
+      const h = poster.offsetHeight;
+      canvas.width = w * scale;
+      canvas.height = h * scale;
+      ctx.scale(scale, scale);
+
+      // 1. Draw Paper Background
+      ctx.fillStyle = document.getElementById('selectPaperBg').value;
+      ctx.fillRect(0, 0, w, h);
+
+      // 2. Draw Title
+      const rawTitle = document.getElementById('inputTitle').value.toUpperCase();
+      const paletteKey = document.getElementById('selectPalette').value;
+      const colors = PALETTES[paletteKey];
+      const titleSize = Number(document.getElementById('rangeTitleSize').value);
+      const titleSpace = Number(document.getElementById('rangeTitleSpace').value);
+
+      ctx.font = `800 ${titleSize}px Fredoka, sans-serif`;
+      ctx.textBaseline = 'top';
+
+      // Measure total title width
+      let totalTitleW = 0;
+      for (let i = 0; i < rawTitle.length; i++) {
+        if (rawTitle[i] === ' ') totalTitleW += titleSize * 0.45;
+        else totalTitleW += ctx.measureText(rawTitle[i]).width + titleSpace;
+      }
+
+      let curX = (w - totalTitleW) / 2;
+      let curY = 40;
+      let colorIdx = 0;
+
+      for (let i = 0; i < rawTitle.length; i++) {
+        const char = rawTitle[i];
+        if (char === ' ') {
+          curX += titleSize * 0.45;
+        } else {
+          ctx.fillStyle = colors[colorIdx % colors.length];
+          ctx.fillText(char, curX, curY);
+          curX += ctx.measureText(char).width + titleSpace;
+          colorIdx++;
+        }
+      }
+
+      curY += titleSize * 1.25;
+
+      // 3. Draw Subtitle
+      const rawSub = document.getElementById('inputSubtitle').value;
+      if (rawSub.trim()) {
+        const subSize = Number(document.getElementById('rangeSubSize').value);
+        ctx.font = `400 ${subSize}px "Patrick Hand", cursive`;
+        ctx.fillStyle = document.getElementById('inputSubtitleColor').value;
+        ctx.textAlign = 'center';
+        ctx.fillText(rawSub, w / 2, curY);
+        curY += subSize * 1.5;
+      }
+
+      // 4. Draw Section Heading
+      const rawHead = document.getElementById('inputSectionHeading').value.toUpperCase();
+      if (rawHead.trim()) {
+        const headSize = Number(document.getElementById('rangeHeadSize').value);
+        ctx.font = `800 ${headSize}px Fredoka, sans-serif`;
+        ctx.fillStyle = document.getElementById('inputHeadingColor').value;
+        ctx.textAlign = 'center';
+        ctx.fillText(rawHead, w / 2, curY);
+        curY += headSize * 1.4;
+      }
+
+      // 5. Draw Image
+      const img = document.getElementById('posterImage');
+      if (img && img.style.display !== 'none' && img.complete) {
+        const imgSize = Number(document.getElementById('rangeImgSize').value);
+        const aspect = img.naturalWidth / img.naturalHeight || 1;
+        const targetH = Math.min(imgSize, h - curY - 70);
+        const targetW = targetH * aspect;
+        ctx.drawImage(img, (w - targetW) / 2, curY + 10, targetW, targetH);
+      }
+
+      // Download
+      const link = document.createElement('a');
+      link.download = `${rawTitle.slice(0, 15).replace(/[^a-z0-9]/gi, '_').toLowerCase()}_poster.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    // Export as Scalable Vector SVG
+    function exportSvg() {
+      const rawTitle = document.getElementById('inputTitle').value.toUpperCase();
+      const paletteKey = document.getElementById('selectPalette').value;
+      const colors = PALETTES[paletteKey];
+      const titleSize = Number(document.getElementById('rangeTitleSize').value);
+      const titleSpace = Number(document.getElementById('rangeTitleSpace').value);
+      const paperBg = document.getElementById('selectPaperBg').value;
+
+      const rawSub = document.getElementById('inputSubtitle').value;
+      const subSize = Number(document.getElementById('rangeSubSize').value);
+      const subColor = document.getElementById('inputSubtitleColor').value;
+
+      const rawHead = document.getElementById('inputSectionHeading').value.toUpperCase();
+      const headSize = Number(document.getElementById('rangeHeadSize').value);
+      const headColor = document.getElementById('inputHeadingColor').value;
+
+      const width = 800;
+      const height = currentRatio === 'square' ? 800 : currentRatio === 'landscape' ? 600 : 1130;
+
+      let currentX = 80;
+      let currentY = 90;
+      let colorIdx = 0;
+
+      let titleXml = '';
+      for (let i = 0; i < rawTitle.length; i++) {
+        const char = rawTitle[i];
+        if (char === ' ') {
+          currentX += titleSize * 0.45;
+        } else {
+          titleXml += `<text x="${currentX}" y="${currentY}" fill="${colors[colorIdx % colors.length]}" font-family="Fredoka, sans-serif" font-size="${titleSize}" font-weight="800">${char}</text>\n    `;
+          currentX += titleSize * 0.65 + titleSpace;
+          colorIdx++;
+        }
+      }
+
+      currentY += subSize * 1.5;
+
+      const svgContent = `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}">
+  <rect width="100%" height="100%" fill="${paperBg}"/>
+  <!-- Title -->
+  <g>
+    ${titleXml}
+  </g>
+  <!-- Subtitle -->
+  ${rawSub ? `<text x="${width/2}" y="${currentY}" text-anchor="middle" fill="${subColor}" font-family="'Patrick Hand', cursive" font-size="${subSize}">${rawSub}</text>` : ''}
+  <!-- Section Heading -->
+  ${rawHead ? `<text x="${width/2}" y="${currentY + headSize * 1.5}" text-anchor="middle" fill="${headColor}" font-family="Fredoka, sans-serif" font-size="${headSize}" font-weight="800">${rawHead}</text>` : ''}
+</svg>`;
+
+      const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `${rawTitle.slice(0, 15).replace(/[^a-z0-9]/gi, '_').toLowerCase()}_poster.svg`;
+      link.click();
+    }
+
+    // Initialize
+    initAssetGrid();
+    updatePoster();
+  </script>
+</body>
+</html>
