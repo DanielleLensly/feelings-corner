@@ -231,11 +231,11 @@
       width: 100%;
       max-width: 620px;
       aspect-ratio: 1 / 1.414; /* A4 aspect ratio */
-      background: var(--color-cream);
+      background: #FFFFFF;
       border-radius: 16px;
       box-shadow: 0 18px 45px rgba(50, 60, 55, 0.15), 0 2px 8px rgba(0,0,0,0.06);
       border: 2px solid #E6DED4;
-      padding: 40px 32px;
+      padding: 38px 30px 24px 30px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -268,7 +268,7 @@
       font-family: var(--font-patrick);
       color: #4A3930;
       line-height: 1.25;
-      margin-bottom: 24px;
+      margin-bottom: 18px;
       word-break: break-word;
       transition: all 0.2s ease;
     }
@@ -278,7 +278,7 @@
       font-weight: 800;
       color: #38251B;
       letter-spacing: 0.04em;
-      margin-bottom: 18px;
+      margin-bottom: 14px;
       line-height: 1.2;
       word-break: break-word;
       transition: all 0.2s ease;
@@ -292,13 +292,13 @@
       justify-content: center;
       min-height: 200px;
       position: relative;
-      margin: 4px 0;
+      margin: 4px 0 0 0;
       overflow: hidden;
     }
 
     .poster-image {
       max-width: 100%;
-      max-height: 520px;
+      max-height: 560px;
       object-fit: contain;
       filter: drop-shadow(0 4px 12px rgba(0,0,0,0.06));
       transition: all 0.2s ease;
@@ -310,8 +310,7 @@
 
     .poster-canvas.full-mode .poster-title-wrap,
     .poster-canvas.full-mode .poster-subtitle,
-    .poster-canvas.full-mode .poster-section-heading,
-    .poster-canvas.full-mode .poster-footer-note {
+    .poster-canvas.full-mode .poster-section-heading {
       display: none !important;
     }
 
@@ -326,17 +325,6 @@
       height: 100%;
       object-fit: fill;
       filter: none;
-    }
-
-    .poster-footer-note {
-      margin-top: auto;
-      font-family: var(--font-quicksand);
-      font-weight: 600;
-      font-size: 0.85rem;
-      color: #6C8275;
-      padding-top: 12px;
-      border-top: 1.5px dashed rgba(0,0,0,0.08);
-      width: 90%;
     }
 
     /* Asset Grid in Sidebar */
@@ -593,17 +581,12 @@
         <div style="margin-top: 6px;">
           <label for="selectPaperBg">Paper Background:</label>
           <select id="selectPaperBg" onchange="updatePoster()">
-            <option value="#FAF6F0">Warm Oatmeal Cream (#FAF6F0 - Original)</option>
-            <option value="#FFFFFF">Pure Crisp White (#FFFFFF)</option>
+            <option value="#FFFFFF" selected>Pure Crisp White (#FFFFFF - Official Poster)</option>
+            <option value="#FAF6F0">Warm Oatmeal Cream (#FAF6F0)</option>
             <option value="#EFF7FC">Gentle Sky Tint (#EFF7FC)</option>
             <option value="#EEF7F2">Gentle Sage Tint (#EEF7F2)</option>
             <option value="#FDF2F4">Tender Rose Tint (#FDF2F4)</option>
           </select>
-        </div>
-
-        <div style="margin-top: 6px;">
-          <label for="inputFooterNote">Footer Note (Optional):</label>
-          <input type="text" id="inputFooterNote" value="🌸 Calming Corner • Safe Space For Big Feelings" oninput="updatePoster()" />
         </div>
       </div>
 
@@ -625,9 +608,6 @@
         <div class="poster-image-container" id="posterImageContainer">
           <img id="posterImage" class="poster-image" src="" alt="Poster Illustration" style="display: none;" />
         </div>
-
-        <!-- 5. Footer Note -->
-        <div class="poster-footer-note" id="posterFooter"></div>
       </div>
     </div>
 
@@ -649,10 +629,11 @@
         subtitle: 'Trace along the path with your finger',
         heading: 'INFINITY BREATHING',
         palette: 'posterOriginal',
+        paperBg: '#FFFFFF',
         titleSize: 48,
         subSize: 24,
         headSize: 28,
-        imgSize: 440,
+        imgSize: 480,
         bodySrc: '/assets/posters/body/breathe-body.png',
         fullSrc: '/assets/posters/breathe with me.jpg'
       },
@@ -661,10 +642,11 @@
         subtitle: 'Today I feel...',
         heading: '',
         palette: 'emotions',
+        paperBg: '#FFFFFF',
         titleSize: 44,
         subSize: 24,
         headSize: 24,
-        imgSize: 460,
+        imgSize: 480,
         bodySrc: '/assets/posters/body/feelings-body.png',
         fullSrc: '/assets/posters/how am i feeling full.png'
       },
@@ -673,10 +655,11 @@
         subtitle: 'Pick one thing to try with your body.',
         heading: '',
         palette: 'warm',
+        paperBg: '#FFFFFF',
         titleSize: 44,
         subSize: 22,
         headSize: 24,
-        imgSize: 460,
+        imgSize: 480,
         bodySrc: '/assets/posters/body/toolbox-body.png',
         fullSrc: '/assets/posters/calm down toolbox.jpg'
       },
@@ -685,10 +668,11 @@
         subtitle: 'When your brain feels stormy, use your senses.',
         heading: '',
         palette: 'posterOriginal',
+        paperBg: '#FFFFFF',
         titleSize: 48,
         subSize: 22,
         headSize: 24,
-        imgSize: 460,
+        imgSize: 480,
         bodySrc: '/assets/posters/body/ground-body.png',
         fullSrc: '/assets/posters/find your ground.jpg'
       },
@@ -697,10 +681,11 @@
         subtitle: 'Point to what will help your heart feel better.',
         heading: '',
         palette: 'duo',
+        paperBg: '#FFFFFF',
         titleSize: 44,
         subSize: 22,
         headSize: 24,
-        imgSize: 460,
+        imgSize: 480,
         bodySrc: '/assets/posters/body/needs-body.png',
         fullSrc: '/assets/posters/what do i need.jpg'
       },
@@ -709,10 +694,11 @@
         subtitle: 'Co-regulation begins with your calm.',
         heading: '',
         palette: 'posterOriginal',
+        paperBg: '#FFFFFF',
         titleSize: 42,
         subSize: 22,
         headSize: 24,
-        imgSize: 460,
+        imgSize: 480,
         bodySrc: '/assets/posters/body/caregiver-body.png',
         fullSrc: '/assets/posters/caregiver guide.jpg'
       }
@@ -883,6 +869,7 @@
         document.getElementById('inputSubtitle').value = tmpl.subtitle;
         document.getElementById('inputSectionHeading').value = tmpl.heading;
         document.getElementById('selectPalette').value = tmpl.palette;
+        document.getElementById('selectPaperBg').value = tmpl.paperBg || '#FFFFFF';
         document.getElementById('rangeTitleSize').value = tmpl.titleSize;
         document.getElementById('rangeSubSize').value = tmpl.subSize;
         document.getElementById('rangeHeadSize').value = tmpl.headSize;
@@ -969,7 +956,7 @@
       headEl.style.color = headColor;
       headEl.style.display = rawHead.trim() ? 'block' : 'none';
 
-      // 4. Image
+      // 4. Image / Body Artwork
       const imgEl = document.getElementById('posterImage');
       const imgSize = document.getElementById('rangeImgSize').value;
       document.getElementById('labelImgSize').innerText = `${imgSize}px`;
@@ -986,14 +973,9 @@
         imgEl.style.display = 'none';
       }
 
-      // 5. Paper Background & Footer
+      // 5. Paper Background
       const paperBg = document.getElementById('selectPaperBg').value;
       document.getElementById('posterCanvas').style.backgroundColor = paperBg;
-
-      const footerText = document.getElementById('inputFooterNote').value;
-      const footerEl = document.getElementById('posterFooter');
-      footerEl.innerHTML = footerText.replace(/\s*(<br\s*\/?>|\r?\n)\s*/gi, '<br/>');
-      footerEl.style.display = footerText.trim() ? 'block' : 'none';
     }
 
     // Export as High-Res 300 DPI PNG
@@ -1111,7 +1093,7 @@
       if (img && img.style.display !== 'none' && img.complete) {
         const imgSize = Number(document.getElementById('rangeImgSize').value);
         const aspect = img.naturalWidth / img.naturalHeight || 1;
-        let targetH = Math.min(imgSize, h - curY - 50);
+        let targetH = Math.min(imgSize, h - curY - 24);
         let targetW = targetH * aspect;
         if (targetW > w - 40) {
           targetW = w - 40;
