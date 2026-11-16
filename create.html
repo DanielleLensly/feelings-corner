@@ -235,7 +235,7 @@
       border-radius: 16px;
       box-shadow: 0 18px 45px rgba(50, 60, 55, 0.15), 0 2px 8px rgba(0,0,0,0.06);
       border: 2px solid #E6DED4;
-      padding: 38px 30px 24px 30px;
+      padding: 26px 16px 16px 16px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -261,14 +261,14 @@
       width: 100%;
       line-height: 1.15;
       word-break: break-word;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .poster-subtitle {
       font-family: var(--font-patrick);
       color: #4A3930;
       line-height: 1.25;
-      margin-bottom: 18px;
+      margin-bottom: 12px;
       word-break: break-word;
       transition: all 0.2s ease;
     }
@@ -278,7 +278,7 @@
       font-weight: 800;
       color: #38251B;
       letter-spacing: 0.04em;
-      margin-bottom: 14px;
+      margin-bottom: 10px;
       line-height: 1.2;
       word-break: break-word;
       transition: all 0.2s ease;
@@ -290,17 +290,20 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 200px;
+      min-height: 0;
       position: relative;
-      margin: 4px 0 0 0;
+      margin: 2px 0 0 0;
+      padding: 0;
       overflow: hidden;
     }
 
     .poster-image {
-      max-width: 100%;
-      max-height: 560px;
+      width: 100%;
+      max-width: 98%;
+      height: 100%;
+      max-height: 100%;
       object-fit: contain;
-      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.06));
+      filter: drop-shadow(0 4px 16px rgba(0,0,0,0.06));
       transition: all 0.2s ease;
     }
 
@@ -559,9 +562,9 @@
 
         <div class="range-group" style="margin-top: 6px;">
           <div class="range-header">
-            <span>Image Size: <span id="labelImgSize">440px</span></span>
+            <span>Artwork Size / Scale: <span id="labelImgSize">98%</span></span>
           </div>
-          <input type="range" id="rangeImgSize" min="150" max="600" value="440" oninput="updatePoster()" />
+          <input type="range" id="rangeImgSize" min="60" max="100" value="98" oninput="updatePoster()" />
         </div>
       </div>
 
@@ -633,7 +636,7 @@
         titleSize: 48,
         subSize: 24,
         headSize: 28,
-        imgSize: 480,
+        imgScale: 98,
         bodySrc: '/assets/posters/body/breathe-body.png',
         fullSrc: '/assets/posters/breathe with me.jpg'
       },
@@ -646,7 +649,7 @@
         titleSize: 44,
         subSize: 24,
         headSize: 24,
-        imgSize: 480,
+        imgScale: 98,
         bodySrc: '/assets/posters/body/feelings-body.png',
         fullSrc: '/assets/posters/how am i feeling full.png'
       },
@@ -659,7 +662,7 @@
         titleSize: 44,
         subSize: 22,
         headSize: 24,
-        imgSize: 480,
+        imgScale: 98,
         bodySrc: '/assets/posters/body/toolbox-body.png',
         fullSrc: '/assets/posters/calm down toolbox.jpg'
       },
@@ -672,7 +675,7 @@
         titleSize: 48,
         subSize: 22,
         headSize: 24,
-        imgSize: 480,
+        imgScale: 98,
         bodySrc: '/assets/posters/body/ground-body.png',
         fullSrc: '/assets/posters/find your ground.jpg'
       },
@@ -685,7 +688,7 @@
         titleSize: 44,
         subSize: 22,
         headSize: 24,
-        imgSize: 480,
+        imgScale: 98,
         bodySrc: '/assets/posters/body/needs-body.png',
         fullSrc: '/assets/posters/what do i need.jpg'
       },
@@ -698,7 +701,7 @@
         titleSize: 42,
         subSize: 22,
         headSize: 24,
-        imgSize: 480,
+        imgScale: 98,
         bodySrc: '/assets/posters/body/caregiver-body.png',
         fullSrc: '/assets/posters/caregiver guide.jpg'
       }
@@ -873,7 +876,7 @@
         document.getElementById('rangeTitleSize').value = tmpl.titleSize;
         document.getElementById('rangeSubSize').value = tmpl.subSize;
         document.getElementById('rangeHeadSize').value = tmpl.headSize;
-        document.getElementById('rangeImgSize').value = tmpl.imgSize;
+        document.getElementById('rangeImgSize').value = tmpl.imgScale || 98;
 
         currentImageSrc = posterMode === 'original' ? tmpl.fullSrc : tmpl.bodySrc;
       }
@@ -958,15 +961,21 @@
 
       // 4. Image / Body Artwork
       const imgEl = document.getElementById('posterImage');
-      const imgSize = document.getElementById('rangeImgSize').value;
-      document.getElementById('labelImgSize').innerText = `${imgSize}px`;
+      const imgScale = document.getElementById('rangeImgSize').value || 98;
+      document.getElementById('labelImgSize').innerText = `${imgScale}%`;
 
       if (currentImageSrc) {
         imgEl.src = currentImageSrc;
         if (posterMode === 'original') {
+          imgEl.style.width = '100%';
           imgEl.style.maxHeight = '100%';
+          imgEl.style.height = '100%';
         } else {
-          imgEl.style.maxHeight = `${imgSize}px`;
+          imgEl.style.width = `${imgScale}%`;
+          imgEl.style.maxWidth = '98%';
+          imgEl.style.maxHeight = '100%';
+          imgEl.style.height = '100%';
+          imgEl.style.objectFit = 'contain';
         }
         imgEl.style.display = 'block';
       } else {
@@ -1004,7 +1013,7 @@
       ctx.fillStyle = document.getElementById('selectPaperBg').value;
       ctx.fillRect(0, 0, w, h);
 
-      let curY = 36;
+      let curY = 32;
 
       // 2. Draw Title (Line-by-line)
       const rawTitleInput = document.getElementById('inputTitle').value;
@@ -1048,7 +1057,7 @@
           curY += titleSize * 1.15;
         });
 
-        curY += 8;
+        curY += 6;
       }
 
       // 3. Draw Subtitle
@@ -1067,7 +1076,7 @@
             curY += subSize * 1.35;
           }
         });
-        curY += 10;
+        curY += 8;
       }
 
       // 4. Draw Section Heading
@@ -1086,20 +1095,27 @@
             curY += headSize * 1.35;
           }
         });
-        curY += 10;
+        curY += 8;
       }
 
-      // 5. Draw Image / Artwork
+      // 5. Draw Image / Artwork (Takes full remaining space)
       if (img && img.style.display !== 'none' && img.complete) {
-        const imgSize = Number(document.getElementById('rangeImgSize').value);
+        const scaleVal = (Number(document.getElementById('rangeImgSize').value) || 98) / 100;
+        const availableW = w * 0.96 * scaleVal;
+        const availableH = h - curY - 20;
         const aspect = img.naturalWidth / img.naturalHeight || 1;
-        let targetH = Math.min(imgSize, h - curY - 24);
-        let targetW = targetH * aspect;
-        if (targetW > w - 40) {
-          targetW = w - 40;
-          targetH = targetW / aspect;
+
+        let targetW = availableW;
+        let targetH = targetW / aspect;
+
+        if (targetH > availableH) {
+          targetH = availableH;
+          targetW = targetH * aspect;
         }
-        ctx.drawImage(img, (w - targetW) / 2, curY + 6, targetW, targetH);
+
+        const imgX = (w - targetW) / 2;
+        const imgY = curY + (availableH - targetH) / 2;
+        ctx.drawImage(img, imgX, imgY, targetW, targetH);
       }
 
       downloadCanvas(canvas, `${currentTemplateKey}_custom_poster.png`);
@@ -1146,7 +1162,7 @@
         return;
       }
 
-      let currentY = 80;
+      let currentY = 70;
       let colorIdx = 0;
       let titleXml = '';
 
@@ -1180,7 +1196,7 @@
           currentY += titleSize * 1.15;
         });
 
-        currentY += 12;
+        currentY += 8;
       }
 
       let subXml = '';
@@ -1194,7 +1210,7 @@
             currentY += subSize * 1.35;
           }
         });
-        currentY += 14;
+        currentY += 10;
       }
 
       let headXml = '';
@@ -1208,15 +1224,31 @@
             currentY += headSize * 1.35;
           }
         });
-        currentY += 14;
+        currentY += 10;
       }
 
       let imgXml = '';
       if (currentImageSrc) {
-        const imgSize = Number(document.getElementById('rangeImgSize').value);
-        const targetH = Math.min(imgSize * 1.5, height - currentY - 60);
-        const targetW = width - 80;
-        imgXml = `<image href="${currentImageSrc}" x="${(width - targetW) / 2}" y="${currentY}" width="${targetW}" height="${targetH}" preserveAspectRatio="xMidYMid meet" />`;
+        const scaleVal = (Number(document.getElementById('rangeImgSize').value) || 98) / 100;
+        const availableW = width * 0.96 * scaleVal;
+        const availableH = height - currentY - 20;
+
+        const imgEl = document.getElementById('posterImage');
+        const aspect = (imgEl && imgEl.naturalWidth && imgEl.naturalHeight)
+          ? (imgEl.naturalWidth / imgEl.naturalHeight)
+          : (1463 / 1871);
+
+        let targetW = availableW;
+        let targetH = targetW / aspect;
+        if (targetH > availableH) {
+          targetH = availableH;
+          targetW = targetH * aspect;
+        }
+
+        const imgX = (width - targetW) / 2;
+        const imgY = currentY + (availableH - targetH) / 2;
+
+        imgXml = `<image href="${currentImageSrc}" x="${imgX}" y="${imgY}" width="${targetW}" height="${targetH}" preserveAspectRatio="xMidYMid meet" />`;
       }
 
       const svgContent = `<?xml version="1.0" encoding="UTF-8"?>
