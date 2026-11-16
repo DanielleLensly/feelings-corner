@@ -290,17 +290,42 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 150px;
+      min-height: 200px;
       position: relative;
-      margin: 8px 0;
+      margin: 4px 0;
+      overflow: hidden;
     }
 
     .poster-image {
       max-width: 100%;
-      max-height: 380px;
+      max-height: 520px;
       object-fit: contain;
       filter: drop-shadow(0 4px 12px rgba(0,0,0,0.06));
       transition: all 0.2s ease;
+    }
+
+    .poster-canvas.full-mode {
+      padding: 0 !important;
+    }
+
+    .poster-canvas.full-mode .poster-title-wrap,
+    .poster-canvas.full-mode .poster-subtitle,
+    .poster-canvas.full-mode .poster-section-heading,
+    .poster-canvas.full-mode .poster-footer-note {
+      display: none !important;
+    }
+
+    .poster-canvas.full-mode .poster-image-container {
+      height: 100%;
+      margin: 0;
+    }
+
+    .poster-canvas.full-mode .poster-image {
+      max-height: 100%;
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+      filter: none;
     }
 
     .poster-footer-note {
@@ -404,13 +429,20 @@
 
       <!-- Preset Templates -->
       <div class="control-section">
-        <div class="section-title">✨ Quick Poster Templates</div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <div class="section-title" style="margin-bottom: 0;">✨ Quick Poster Templates</div>
+          <div style="display: flex; gap: 4px;">
+            <button class="btn-pill active" id="btnModeCustom" style="font-size: 0.72rem; padding: 3px 8px;" onclick="setPosterMode('editable')">🎨 Editable</button>
+            <button class="btn-pill" id="btnModeFull" style="font-size: 0.72rem; padding: 3px 8px;" onclick="setPosterMode('original')">🖼️ Full Original</button>
+          </div>
+        </div>
         <div style="display: flex; gap: 6px; flex-wrap: wrap;" id="templateButtons">
           <button class="btn-pill template-pill active" onclick="loadTemplate('breathe', this)">Breathe With Me</button>
           <button class="btn-pill template-pill" onclick="loadTemplate('feelings', this)">How Am I Feeling?</button>
           <button class="btn-pill template-pill" onclick="loadTemplate('toolbox', this)">Calm Down Toolbox</button>
           <button class="btn-pill template-pill" onclick="loadTemplate('ground', this)">Find Your Ground</button>
           <button class="btn-pill template-pill" onclick="loadTemplate('needs', this)">What Do I Need?</button>
+          <button class="btn-pill template-pill" onclick="loadTemplate('caregiver', this)">Caregiver Guide</button>
         </div>
       </div>
 
@@ -518,7 +550,16 @@
       <div class="control-section">
         <div class="section-title">🖼️ Add Image / Illustration</div>
         
-        <label>Pick from Calming Corner Library:</label>
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
+          <label style="margin: 0; font-weight: 700;">Pick from Calming Corner Library:</label>
+          <div style="display: flex; gap: 4px;" id="assetFilterTabs">
+            <button class="btn-pill active" style="font-size: 0.68rem; padding: 2px 6px;" onclick="filterAssets('all', this)">All</button>
+            <button class="btn-pill" style="font-size: 0.68rem; padding: 2px 6px;" onclick="filterAssets('body', this)">🌟 Artworks</button>
+            <button class="btn-pill" style="font-size: 0.68rem; padding: 2px 6px;" onclick="filterAssets('full', this)">🖼️ Full</button>
+            <button class="btn-pill" style="font-size: 0.68rem; padding: 2px 6px;" onclick="filterAssets('face', this)">😊 Faces</button>
+          </div>
+        </div>
+
         <div class="asset-grid" id="assetGrid">
           <!-- Populated by JavaScript -->
         </div>
@@ -530,9 +571,9 @@
 
         <div class="range-group" style="margin-top: 6px;">
           <div class="range-header">
-            <span>Image Size: <span id="labelImgSize">260px</span></span>
+            <span>Image Size: <span id="labelImgSize">440px</span></span>
           </div>
-          <input type="range" id="rangeImgSize" min="100" max="440" value="260" oninput="updatePoster()" />
+          <input type="range" id="rangeImgSize" min="150" max="600" value="440" oninput="updatePoster()" />
         </div>
       </div>
 
@@ -601,29 +642,127 @@
       warm: ['#E07A5F', '#EDD287', '#84B896', '#D88467', '#A29060']
     };
 
-    // Built-in library assets
+    // Official Poster Definitions (Full authentic posters and artwork bodies)
+    const POSTER_TEMPLATES = {
+      breathe: {
+        title: 'BREATHE WITH ME',
+        subtitle: 'Trace along the path with your finger',
+        heading: 'INFINITY BREATHING',
+        palette: 'posterOriginal',
+        titleSize: 48,
+        subSize: 24,
+        headSize: 28,
+        imgSize: 440,
+        bodySrc: '/assets/posters/body/breathe-body.png',
+        fullSrc: '/assets/posters/breathe with me.jpg'
+      },
+      feelings: {
+        title: 'HOW AM I FEELING<br>RIGHT NOW?',
+        subtitle: 'Today I feel...',
+        heading: '',
+        palette: 'emotions',
+        titleSize: 44,
+        subSize: 24,
+        headSize: 24,
+        imgSize: 460,
+        bodySrc: '/assets/posters/body/feelings-body.png',
+        fullSrc: '/assets/posters/how am i feeling full.png'
+      },
+      toolbox: {
+        title: 'MY CALM DOWN<br>TOOLBOX',
+        subtitle: 'Pick one thing to try with your body.',
+        heading: '',
+        palette: 'warm',
+        titleSize: 44,
+        subSize: 22,
+        headSize: 24,
+        imgSize: 460,
+        bodySrc: '/assets/posters/body/toolbox-body.png',
+        fullSrc: '/assets/posters/calm down toolbox.jpg'
+      },
+      ground: {
+        title: 'FIND YOUR GROUND',
+        subtitle: 'When your brain feels stormy, use your senses.',
+        heading: '',
+        palette: 'posterOriginal',
+        titleSize: 48,
+        subSize: 22,
+        headSize: 24,
+        imgSize: 460,
+        bodySrc: '/assets/posters/body/ground-body.png',
+        fullSrc: '/assets/posters/find your ground.jpg'
+      },
+      needs: {
+        title: 'WHAT DO I NEED<br>RIGHT NOW?',
+        subtitle: 'Point to what will help your heart feel better.',
+        heading: '',
+        palette: 'duo',
+        titleSize: 44,
+        subSize: 22,
+        headSize: 24,
+        imgSize: 460,
+        bodySrc: '/assets/posters/body/needs-body.png',
+        fullSrc: '/assets/posters/what do i need.jpg'
+      },
+      caregiver: {
+        title: 'CAREGIVER GUIDE:<br>THE CALM CORNER',
+        subtitle: 'Co-regulation begins with your calm.',
+        heading: '',
+        palette: 'posterOriginal',
+        titleSize: 42,
+        subSize: 22,
+        headSize: 24,
+        imgSize: 460,
+        bodySrc: '/assets/posters/body/caregiver-body.png',
+        fullSrc: '/assets/posters/caregiver guide.jpg'
+      }
+    };
+
+    // Built-in library assets categorized
     const LIBRARY_ASSETS = [
-      { id: 'happy', name: 'Happy Face', src: '/assets/faces/happy.png' },
-      { id: 'calm', name: 'Calm Face', src: '/assets/faces/calm.png' },
-      { id: 'sad', name: 'Sad Face', src: '/assets/faces/sad.png' },
-      { id: 'worried', name: 'Worried Face', src: '/assets/faces/worried.png' },
-      { id: 'angry', name: 'Angry Face', src: '/assets/faces/angry.png' },
-      { id: 'excited', name: 'Excited Face', src: '/assets/faces/excited.png' },
-      { id: 'silly', name: 'Silly Face', src: '/assets/faces/silly.png' },
-      { id: 'tired', name: 'Tired Face', src: '/assets/faces/tired.png' },
-      { id: 'breathe-path', name: 'Infinity Path', src: '/assets/posters/breathe with me.jpg' },
-      { id: 'stickers', name: 'Sticker Badges', src: '/assets/emotional-regulation-light.jpg' }
+      // Core Poster Artwork Bodies
+      { id: 'breathe-body', category: 'body', name: 'Breathe Paths (Turtle & Bunny)', src: '/assets/posters/body/breathe-body.png' },
+      { id: 'feelings-body', category: 'body', name: 'Feelings Grid (8 Emotions)', src: '/assets/posters/body/feelings-body.png' },
+      { id: 'toolbox-body', category: 'body', name: 'Calm Down Toolbox (4 Body Resets)', src: '/assets/posters/body/toolbox-body.png' },
+      { id: 'ground-body', category: 'body', name: '5-4-3-2-1 Senses Grounding', src: '/assets/posters/body/ground-body.png' },
+      { id: 'needs-body', category: 'body', name: 'Heart Needs (4 Need Cards)', src: '/assets/posters/body/needs-body.png' },
+      { id: 'caregiver-body', category: 'body', name: 'Caregiver Guidance Sections', src: '/assets/posters/body/caregiver-body.png' },
+
+      // Full Complete Official Posters
+      { id: 'full-breathe', category: 'full', name: 'Full: Breathe With Me', src: '/assets/posters/breathe with me.jpg' },
+      { id: 'full-feelings', category: 'full', name: 'Full: How Am I Feeling?', src: '/assets/posters/how am i feeling full.png' },
+      { id: 'full-toolbox', category: 'full', name: 'Full: Calm Down Toolbox', src: '/assets/posters/calm down toolbox.jpg' },
+      { id: 'full-ground', category: 'full', name: 'Full: Find Your Ground', src: '/assets/posters/find your ground.jpg' },
+      { id: 'full-needs', category: 'full', name: 'Full: What Do I Need?', src: '/assets/posters/what do i need.jpg' },
+      { id: 'full-caregiver', category: 'full', name: 'Full: Caregiver Guide', src: '/assets/posters/caregiver guide.jpg' },
+
+      // Individual Emotion Faces
+      { id: 'happy', category: 'face', name: 'Happy Face', src: '/assets/faces/happy.png' },
+      { id: 'calm', category: 'face', name: 'Calm Face', src: '/assets/faces/calm.png' },
+      { id: 'sad', category: 'face', name: 'Sad Face', src: '/assets/faces/sad.png' },
+      { id: 'worried', category: 'face', name: 'Worried Face', src: '/assets/faces/worried.png' },
+      { id: 'angry', category: 'face', name: 'Angry Face', src: '/assets/faces/angry.png' },
+      { id: 'excited', category: 'face', name: 'Excited Face', src: '/assets/faces/excited.png' },
+      { id: 'silly', category: 'face', name: 'Silly Face', src: '/assets/faces/silly.png' },
+      { id: 'tired', category: 'face', name: 'Tired Face', src: '/assets/faces/tired.png' },
     ];
 
-    let currentImageSrc = '/assets/faces/calm.png';
+    let currentTemplateKey = 'breathe';
+    let currentImageSrc = '/assets/posters/body/breathe-body.png';
     let currentRatio = 'a4';
+    let currentAssetFilter = 'all';
+    let posterMode = 'editable'; // 'editable' or 'original'
 
     // Populate asset grid
     function initAssetGrid() {
       const grid = document.getElementById('assetGrid');
       grid.innerHTML = '';
 
-      LIBRARY_ASSETS.forEach(item => {
+      const items = currentAssetFilter === 'all'
+        ? LIBRARY_ASSETS
+        : LIBRARY_ASSETS.filter(a => a.category === currentAssetFilter);
+
+      items.forEach(item => {
         const thumb = document.createElement('div');
         thumb.className = `asset-thumb ${item.src === currentImageSrc ? 'active' : ''}`;
         thumb.title = item.name;
@@ -631,7 +770,11 @@
           document.querySelectorAll('.asset-thumb').forEach(t => t.classList.remove('active'));
           thumb.classList.add('active');
           currentImageSrc = item.src;
-          updatePoster();
+          if (item.category === 'full') {
+            setPosterMode('original');
+          } else {
+            setPosterMode('editable');
+          }
         };
 
         const img = document.createElement('img');
@@ -642,6 +785,44 @@
       });
     }
 
+    // Filter library assets
+    function filterAssets(cat, btn) {
+      currentAssetFilter = cat;
+      const tabs = document.getElementById('assetFilterTabs');
+      if (tabs) tabs.querySelectorAll('.btn-pill').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      initAssetGrid();
+    }
+
+    // Mode Toggle: 'editable' (Custom title + artwork) vs 'original' (100% full original poster design)
+    function setPosterMode(mode) {
+      posterMode = mode;
+      const canvas = document.getElementById('posterCanvas');
+      const btnCustom = document.getElementById('btnModeCustom');
+      const btnFull = document.getElementById('btnModeFull');
+
+      if (mode === 'original') {
+        canvas.classList.add('full-mode');
+        if (btnFull) btnFull.classList.add('active');
+        if (btnCustom) btnCustom.classList.remove('active');
+
+        // Ensure image is the full authentic poster
+        const tmpl = POSTER_TEMPLATES[currentTemplateKey];
+        if (tmpl) currentImageSrc = tmpl.fullSrc;
+      } else {
+        canvas.classList.remove('full-mode');
+        if (btnCustom) btnCustom.classList.add('active');
+        if (btnFull) btnFull.classList.remove('active');
+
+        // Ensure image is the body artwork
+        const tmpl = POSTER_TEMPLATES[currentTemplateKey];
+        if (tmpl) currentImageSrc = tmpl.bodySrc;
+      }
+
+      initAssetGrid();
+      updatePoster();
+    }
+
     // Handle user image upload
     function handleCustomUpload(e) {
       const file = e.target.files[0];
@@ -649,6 +830,7 @@
         const reader = new FileReader();
         reader.onload = function(event) {
           currentImageSrc = event.target.result;
+          setPosterMode('editable');
           document.querySelectorAll('.asset-thumb').forEach(t => t.classList.remove('active'));
           updatePoster();
         };
@@ -660,7 +842,7 @@
     function setRatio(ratio) {
       currentRatio = ratio;
       const canvas = document.getElementById('posterCanvas');
-      canvas.className = `poster-canvas ${ratio === 'square' ? 'square' : ratio === 'landscape' ? 'landscape' : ''}`;
+      canvas.className = `poster-canvas ${ratio === 'square' ? 'square' : ratio === 'landscape' ? 'landscape' : ''} ${posterMode === 'original' ? 'full-mode' : ''}`;
       
       document.getElementById('btnRatioA4').className = `btn-pill ${ratio === 'a4' ? 'active' : ''}`;
       document.getElementById('btnRatioSquare').className = `btn-pill ${ratio === 'square' ? 'active' : ''}`;
@@ -683,8 +865,9 @@
       updatePoster();
     }
 
-    // Quick Templates
+    // Quick Templates (Loads authentic default designs)
     function loadTemplate(key, btn) {
+      currentTemplateKey = key;
       document.querySelectorAll('.template-pill').forEach(b => b.classList.remove('active'));
       if (btn) {
         btn.classList.add('active');
@@ -694,36 +877,18 @@
         });
       }
 
-      if (key === 'breathe') {
-        document.getElementById('inputTitle').value = 'BREATHE WITH ME';
-        document.getElementById('inputSubtitle').value = 'Trace along the path with your finger';
-        document.getElementById('inputSectionHeading').value = 'INFINITY BREATHING';
-        document.getElementById('selectPalette').value = 'posterOriginal';
-        currentImageSrc = '/assets/posters/breathe with me.jpg';
-      } else if (key === 'feelings') {
-        document.getElementById('inputTitle').value = 'HOW AM I FEELING<br>RIGHT NOW?';
-        document.getElementById('inputSubtitle').value = 'Point to the face that matches what you feel inside';
-        document.getElementById('inputSectionHeading').value = 'TODAY I FEEL...';
-        document.getElementById('selectPalette').value = 'emotions';
-        currentImageSrc = '/assets/faces/happy.png';
-      } else if (key === 'toolbox') {
-        document.getElementById('inputTitle').value = 'MY CALM DOWN<br>TOOLBOX';
-        document.getElementById('inputSubtitle').value = 'Pick one thing to try with your body';
-        document.getElementById('inputSectionHeading').value = 'TAKE A DEEP RESET';
-        document.getElementById('selectPalette').value = 'warm';
-        currentImageSrc = '/assets/faces/calm.png';
-      } else if (key === 'ground') {
-        document.getElementById('inputTitle').value = 'FIND YOUR GROUND';
-        document.getElementById('inputSubtitle').value = 'When your brain feels stormy, use your senses';
-        document.getElementById('inputSectionHeading').value = '5 - 4 - 3 - 2 - 1 RESET';
-        document.getElementById('selectPalette').value = 'emotions';
-        currentImageSrc = '/assets/faces/calm.png';
-      } else if (key === 'needs') {
-        document.getElementById('inputTitle').value = 'WHAT DO I NEED<br>RIGHT NOW?';
-        document.getElementById('inputSubtitle').value = 'Point to what will help your heart feel better';
-        document.getElementById('inputSectionHeading').value = 'I WOULD LIKE...';
-        document.getElementById('selectPalette').value = 'duo';
-        currentImageSrc = '/assets/faces/happy.png';
+      const tmpl = POSTER_TEMPLATES[key];
+      if (tmpl) {
+        document.getElementById('inputTitle').value = tmpl.title;
+        document.getElementById('inputSubtitle').value = tmpl.subtitle;
+        document.getElementById('inputSectionHeading').value = tmpl.heading;
+        document.getElementById('selectPalette').value = tmpl.palette;
+        document.getElementById('rangeTitleSize').value = tmpl.titleSize;
+        document.getElementById('rangeSubSize').value = tmpl.subSize;
+        document.getElementById('rangeHeadSize').value = tmpl.headSize;
+        document.getElementById('rangeImgSize').value = tmpl.imgSize;
+
+        currentImageSrc = posterMode === 'original' ? tmpl.fullSrc : tmpl.bodySrc;
       }
 
       initAssetGrid();
@@ -735,7 +900,7 @@
       // 1. Rainbow Title with HTML tag & line break support
       const rawTitleInput = document.getElementById('inputTitle').value;
       const paletteKey = document.getElementById('selectPalette').value;
-      const colors = PALETTES[paletteKey];
+      const colors = PALETTES[paletteKey] || PALETTES.posterOriginal;
       const titleSize = document.getElementById('rangeTitleSize').value;
       const titleSpace = document.getElementById('rangeTitleSpace').value;
 
@@ -748,10 +913,7 @@
       titleEl.style.fontFamily = 'var(--font-fredoka)';
       titleEl.style.fontWeight = '800';
 
-      // Normalize breaks while trimming whitespace around breaks so lines center cleanly
       const normalizedTitle = rawTitleInput.replace(/\s*(<br\s*\/?>|\r?\n)\s*/gi, '<br/>');
-
-      // Tokenize by HTML tags (<...>)
       const tokens = normalizedTitle.split(/(<[^>]+>)/g);
       let titleHtml = '';
       let colorIdx = 0;
@@ -761,10 +923,8 @@
         if (/^<br\s*\/?>$/i.test(token)) {
           titleHtml += '<br/>';
         } else if (/^<[^>]+>$/.test(token)) {
-          // Pass-through other HTML tags (<b>, <i>, <span>, etc.)
           titleHtml += token;
         } else {
-          // Visible characters - uppercase & color each letter
           const upperText = token.toUpperCase();
           for (let i = 0; i < upperText.length; i++) {
             const char = upperText[i];
@@ -779,8 +939,9 @@
         }
       });
       titleEl.innerHTML = titleHtml;
+      titleEl.style.display = rawTitleInput.trim() ? 'block' : 'none';
 
-      // 2. Subtitle (HTML tags & line breaks supported)
+      // 2. Subtitle
       const rawSub = document.getElementById('inputSubtitle').value;
       const subFont = document.getElementById('selectSubtitleFont').value;
       const subSize = document.getElementById('rangeSubSize').value;
@@ -795,7 +956,7 @@
       subEl.style.color = subColor;
       subEl.style.display = rawSub.trim() ? 'block' : 'none';
 
-      // 3. Section Heading (HTML tags & line breaks supported)
+      // 3. Section Heading
       const rawHead = document.getElementById('inputSectionHeading').value;
       const headSize = document.getElementById('rangeHeadSize').value;
       const headColor = document.getElementById('inputHeadingColor').value;
@@ -815,7 +976,11 @@
 
       if (currentImageSrc) {
         imgEl.src = currentImageSrc;
-        imgEl.style.maxHeight = `${imgSize}px`;
+        if (posterMode === 'original') {
+          imgEl.style.maxHeight = '100%';
+        } else {
+          imgEl.style.maxHeight = `${imgSize}px`;
+        }
         imgEl.style.display = 'block';
       } else {
         imgEl.style.display = 'none';
@@ -831,7 +996,7 @@
       footerEl.style.display = footerText.trim() ? 'block' : 'none';
     }
 
-    // Export as High-Res 300 DPI PNG (Multiline supported)
+    // Export as High-Res 300 DPI PNG
     function exportPng() {
       const poster = document.getElementById('posterCanvas');
       const canvas = document.createElement('canvas');
@@ -844,55 +1009,67 @@
       canvas.height = h * scale;
       ctx.scale(scale, scale);
 
+      const img = document.getElementById('posterImage');
+
+      // If in 100% Full Original Poster Mode, draw the high-res poster image filling the canvas
+      if (posterMode === 'original' && img && img.complete) {
+        ctx.drawImage(img, 0, 0, w, h);
+        downloadCanvas(canvas, `${currentTemplateKey}_original_poster.png`);
+        return;
+      }
+
       // 1. Draw Paper Background
       ctx.fillStyle = document.getElementById('selectPaperBg').value;
       ctx.fillRect(0, 0, w, h);
 
+      let curY = 36;
+
       // 2. Draw Title (Line-by-line)
       const rawTitleInput = document.getElementById('inputTitle').value;
       const paletteKey = document.getElementById('selectPalette').value;
-      const colors = PALETTES[paletteKey];
+      const colors = PALETTES[paletteKey] || PALETTES.posterOriginal;
       const titleSize = Number(document.getElementById('rangeTitleSize').value);
       const titleSpace = Number(document.getElementById('rangeTitleSpace').value);
 
-      ctx.font = `800 ${titleSize}px Fredoka, sans-serif`;
-      ctx.textBaseline = 'top';
+      if (rawTitleInput.trim()) {
+        ctx.font = `800 ${titleSize}px Fredoka, sans-serif`;
+        ctx.textBaseline = 'top';
 
-      const titleLines = rawTitleInput.split(/<br\s*\/?>|\r?\n/gi);
-      let curY = 40;
-      let colorIdx = 0;
+        const titleLines = rawTitleInput.split(/<br\s*\/?>|\r?\n/gi);
+        let colorIdx = 0;
 
-      titleLines.forEach(lineStr => {
-        const cleanLine = lineStr.replace(/<[^>]+>/g, '').trim().toUpperCase();
-        if (!cleanLine) {
-          curY += titleSize * 0.5;
-          return;
-        }
-
-        let totalTitleW = 0;
-        for (let i = 0; i < cleanLine.length; i++) {
-          if (cleanLine[i] === ' ') totalTitleW += titleSize * 0.45;
-          else totalTitleW += ctx.measureText(cleanLine[i]).width + titleSpace;
-        }
-
-        let curX = (w - totalTitleW) / 2;
-        for (let i = 0; i < cleanLine.length; i++) {
-          const char = cleanLine[i];
-          if (char === ' ') {
-            curX += titleSize * 0.45;
-          } else {
-            ctx.fillStyle = colors[colorIdx % colors.length];
-            ctx.fillText(char, curX, curY);
-            curX += ctx.measureText(char).width + titleSpace;
-            colorIdx++;
+        titleLines.forEach(lineStr => {
+          const cleanLine = lineStr.replace(/<[^>]+>/g, '').trim().toUpperCase();
+          if (!cleanLine) {
+            curY += titleSize * 0.5;
+            return;
           }
-        }
-        curY += titleSize * 1.15;
-      });
 
-      curY += 12;
+          let totalTitleW = 0;
+          for (let i = 0; i < cleanLine.length; i++) {
+            if (cleanLine[i] === ' ') totalTitleW += titleSize * 0.45;
+            else totalTitleW += ctx.measureText(cleanLine[i]).width + titleSpace;
+          }
 
-      // 3. Draw Subtitle (Line-by-line)
+          let curX = (w - totalTitleW) / 2;
+          for (let i = 0; i < cleanLine.length; i++) {
+            const char = cleanLine[i];
+            if (char === ' ') {
+              curX += titleSize * 0.45;
+            } else {
+              ctx.fillStyle = colors[colorIdx % colors.length];
+              ctx.fillText(char, curX, curY);
+              curX += ctx.measureText(char).width + titleSpace;
+              colorIdx++;
+            }
+          }
+          curY += titleSize * 1.15;
+        });
+
+        curY += 8;
+      }
+
+      // 3. Draw Subtitle
       const rawSub = document.getElementById('inputSubtitle').value;
       if (rawSub.trim()) {
         const subSize = Number(document.getElementById('rangeSubSize').value);
@@ -908,10 +1085,10 @@
             curY += subSize * 1.35;
           }
         });
-        curY += 14;
+        curY += 10;
       }
 
-      // 4. Draw Section Heading (Line-by-line)
+      // 4. Draw Section Heading
       const rawHead = document.getElementById('inputSectionHeading').value;
       if (rawHead.trim()) {
         const headSize = Number(document.getElementById('rangeHeadSize').value);
@@ -927,32 +1104,37 @@
             curY += headSize * 1.35;
           }
         });
-        curY += 14;
+        curY += 10;
       }
 
-      // 5. Draw Image
-      const img = document.getElementById('posterImage');
+      // 5. Draw Image / Artwork
       if (img && img.style.display !== 'none' && img.complete) {
         const imgSize = Number(document.getElementById('rangeImgSize').value);
         const aspect = img.naturalWidth / img.naturalHeight || 1;
-        const targetH = Math.min(imgSize, h - curY - 70);
-        const targetW = targetH * aspect;
-        ctx.drawImage(img, (w - targetW) / 2, curY + 10, targetW, targetH);
+        let targetH = Math.min(imgSize, h - curY - 50);
+        let targetW = targetH * aspect;
+        if (targetW > w - 40) {
+          targetW = w - 40;
+          targetH = targetW / aspect;
+        }
+        ctx.drawImage(img, (w - targetW) / 2, curY + 6, targetW, targetH);
       }
 
-      // Download
-      const safeTitle = rawTitleInput.replace(/<[^>]+>/g, ' ').replace(/\s+/g, '_').slice(0, 20).replace(/[^a-z0-9_]/gi, '').toLowerCase();
+      downloadCanvas(canvas, `${currentTemplateKey}_custom_poster.png`);
+    }
+
+    function downloadCanvas(canvas, filename) {
       const link = document.createElement('a');
-      link.download = `${safeTitle || 'poster'}.png`;
+      link.download = filename;
       link.href = canvas.toDataURL('image/png');
       link.click();
     }
 
-    // Export as Scalable Vector SVG (Multiline supported)
+    // Export as Scalable Vector SVG
     function exportSvg() {
       const rawTitleInput = document.getElementById('inputTitle').value;
       const paletteKey = document.getElementById('selectPalette').value;
-      const colors = PALETTES[paletteKey];
+      const colors = PALETTES[paletteKey] || PALETTES.posterOriginal;
       const titleSize = Number(document.getElementById('rangeTitleSize').value);
       const titleSpace = Number(document.getElementById('rangeTitleSpace').value);
       const paperBg = document.getElementById('selectPaperBg').value;
@@ -968,40 +1150,56 @@
       const width = 800;
       const height = currentRatio === 'square' ? 800 : currentRatio === 'landscape' ? 600 : 1130;
 
-      let currentY = 90;
+      // If full original poster mode
+      if (posterMode === 'original' && currentImageSrc) {
+        const svgContent = `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}">
+  <image href="${currentImageSrc}" x="0" y="0" width="${width}" height="${height}" preserveAspectRatio="none" />
+</svg>`;
+        const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `${currentTemplateKey}_original_poster.svg`;
+        link.click();
+        return;
+      }
+
+      let currentY = 80;
       let colorIdx = 0;
       let titleXml = '';
 
-      const titleLines = rawTitleInput.split(/<br\s*\/?>|\r?\n/gi);
-      titleLines.forEach(lineStr => {
-        const cleanLine = lineStr.replace(/<[^>]+>/g, '').trim().toUpperCase();
-        if (!cleanLine) {
-          currentY += titleSize * 0.5;
-          return;
-        }
-
-        let lineW = 0;
-        for (let i = 0; i < cleanLine.length; i++) {
-          if (cleanLine[i] === ' ') lineW += titleSize * 0.45;
-          else lineW += titleSize * 0.65 + titleSpace;
-        }
-        let curX = (width - lineW) / 2;
-
-        for (let i = 0; i < cleanLine.length; i++) {
-          const char = cleanLine[i];
-          if (char === ' ') {
-            curX += titleSize * 0.45;
-          } else {
-            const safeChar = char === '&' ? '&amp;' : char === '<' ? '&lt;' : char === '>' ? '&gt;' : char;
-            titleXml += `<text x="${curX}" y="${currentY}" fill="${colors[colorIdx % colors.length]}" font-family="Fredoka, sans-serif" font-size="${titleSize}" font-weight="800">${safeChar}</text>\n    `;
-            curX += titleSize * 0.65 + titleSpace;
-            colorIdx++;
+      if (rawTitleInput.trim()) {
+        const titleLines = rawTitleInput.split(/<br\s*\/?>|\r?\n/gi);
+        titleLines.forEach(lineStr => {
+          const cleanLine = lineStr.replace(/<[^>]+>/g, '').trim().toUpperCase();
+          if (!cleanLine) {
+            currentY += titleSize * 0.5;
+            return;
           }
-        }
-        currentY += titleSize * 1.15;
-      });
 
-      currentY += 12;
+          let lineW = 0;
+          for (let i = 0; i < cleanLine.length; i++) {
+            if (cleanLine[i] === ' ') lineW += titleSize * 0.45;
+            else lineW += titleSize * 0.65 + titleSpace;
+          }
+          let curX = (width - lineW) / 2;
+
+          for (let i = 0; i < cleanLine.length; i++) {
+            const char = cleanLine[i];
+            if (char === ' ') {
+              curX += titleSize * 0.45;
+            } else {
+              const safeChar = char === '&' ? '&amp;' : char === '<' ? '&lt;' : char === '>' ? '&gt;' : char;
+              titleXml += `<text x="${curX}" y="${currentY}" fill="${colors[colorIdx % colors.length]}" font-family="Fredoka, sans-serif" font-size="${titleSize}" font-weight="800">${safeChar}</text>\n    `;
+              curX += titleSize * 0.65 + titleSpace;
+              colorIdx++;
+            }
+          }
+          currentY += titleSize * 1.15;
+        });
+
+        currentY += 12;
+      }
 
       let subXml = '';
       if (rawSub.trim()) {
@@ -1028,6 +1226,15 @@
             currentY += headSize * 1.35;
           }
         });
+        currentY += 14;
+      }
+
+      let imgXml = '';
+      if (currentImageSrc) {
+        const imgSize = Number(document.getElementById('rangeImgSize').value);
+        const targetH = Math.min(imgSize * 1.5, height - currentY - 60);
+        const targetW = width - 80;
+        imgXml = `<image href="${currentImageSrc}" x="${(width - targetW) / 2}" y="${currentY}" width="${targetW}" height="${targetH}" preserveAspectRatio="xMidYMid meet" />`;
       }
 
       const svgContent = `<?xml version="1.0" encoding="UTF-8"?>
@@ -1041,19 +1248,19 @@
   ${subXml}
   <!-- Section Heading -->
   ${headXml}
+  <!-- Artwork -->
+  ${imgXml}
 </svg>`;
 
-      const safeTitle = rawTitleInput.replace(/<[^>]+>/g, ' ').replace(/\s+/g, '_').slice(0, 20).replace(/[^a-z0-9_]/gi, '').toLowerCase();
       const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
-      link.download = `${safeTitle || 'poster'}.svg`;
+      link.download = `${currentTemplateKey}_poster.svg`;
       link.click();
     }
 
     // Initialize
-    initAssetGrid();
-    updatePoster();
+    loadTemplate('breathe');
   </script>
 </body>
 </html>
