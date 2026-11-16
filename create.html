@@ -405,12 +405,12 @@
       <!-- Preset Templates -->
       <div class="control-section">
         <div class="section-title">✨ Quick Poster Templates</div>
-        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-          <button class="btn-pill active" onclick="loadTemplate('breathe')">Breathe With Me</button>
-          <button class="btn-pill" onclick="loadTemplate('feelings')">How Am I Feeling?</button>
-          <button class="btn-pill" onclick="loadTemplate('toolbox')">Calm Down Toolbox</button>
-          <button class="btn-pill" onclick="loadTemplate('ground')">Find Your Ground</button>
-          <button class="btn-pill" onclick="loadTemplate('needs')">What Do I Need?</button>
+        <div style="display: flex; gap: 6px; flex-wrap: wrap;" id="templateButtons">
+          <button class="btn-pill template-pill active" onclick="loadTemplate('breathe', this)">Breathe With Me</button>
+          <button class="btn-pill template-pill" onclick="loadTemplate('feelings', this)">How Am I Feeling?</button>
+          <button class="btn-pill template-pill" onclick="loadTemplate('toolbox', this)">Calm Down Toolbox</button>
+          <button class="btn-pill template-pill" onclick="loadTemplate('ground', this)">Find Your Ground</button>
+          <button class="btn-pill template-pill" onclick="loadTemplate('needs', this)">What Do I Need?</button>
         </div>
       </div>
 
@@ -656,10 +656,15 @@
     }
 
     // Quick Templates
-    function loadTemplate(key) {
-      document.querySelectorAll('.btn-pill').forEach(b => {
-        if (b.innerText.toLowerCase().includes(key)) b.classList.add('active');
-      });
+    function loadTemplate(key, btn) {
+      document.querySelectorAll('.template-pill').forEach(b => b.classList.remove('active'));
+      if (btn) {
+        btn.classList.add('active');
+      } else {
+        document.querySelectorAll('.template-pill').forEach(b => {
+          if (b.innerText.toLowerCase().includes(key)) b.classList.add('active');
+        });
+      }
 
       if (key === 'breathe') {
         document.getElementById('inputTitle').value = 'BREATHE WITH ME';
