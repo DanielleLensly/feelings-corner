@@ -96,6 +96,7 @@ export default function App() {
         <div style={{ marginBottom: '40px' }}>
           <RoomShowcase />
         </div>
+
       </section>
 
       {/* Product Overview: What Is The Calming Corner? */}
