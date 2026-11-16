@@ -419,11 +419,15 @@
         <div class="section-title">🎨 Title (Letter-by-Letter Colored)</div>
         
         <div>
-          <label for="inputTitle">Title Text:</label>
-          <input type="text" id="inputTitle" value="BREATHE WITH ME" oninput="updatePoster()" />
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <label for="inputTitle" style="margin: 0; font-weight: 700;">Title Text:</label>
+            <button type="button" class="btn-pill" style="padding: 2px 8px; font-size: 0.72rem; cursor: pointer;" onclick="insertBreak('inputTitle')">+ &lt;br&gt; Break</button>
+          </div>
+          <textarea id="inputTitle" rows="2" style="resize: vertical; font-family: inherit; font-size: 0.95rem;" oninput="updatePoster()">BREATHE WITH ME</textarea>
+          <div style="font-size: 0.76rem; color: #7F7366; margin-top: 3px;">Supports HTML tags (e.g. <code>&lt;br&gt;</code>, <code>&lt;b&gt;</code>) or Enter for line breaks</div>
         </div>
 
-        <div>
+        <div style="margin-top: 8px;">
           <label for="selectPalette">Color Sequence:</label>
           <select id="selectPalette" onchange="updatePoster()">
             <option value="posterOriginal">Poster Original Palette (Peach, Yellow, Sage, Sky, Lilac, Rose)</option>
@@ -453,11 +457,15 @@
         <div class="section-title">✍️ Subtitle / Instruction</div>
         
         <div>
-          <label for="inputSubtitle">Subtitle Text:</label>
-          <input type="text" id="inputSubtitle" value="Trace along the path with your finger" oninput="updatePoster()" />
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <label for="inputSubtitle" style="margin: 0; font-weight: 700;">Subtitle Text:</label>
+            <button type="button" class="btn-pill" style="padding: 2px 8px; font-size: 0.72rem; cursor: pointer;" onclick="insertBreak('inputSubtitle')">+ &lt;br&gt; Break</button>
+          </div>
+          <textarea id="inputSubtitle" rows="2" style="resize: vertical; font-family: inherit; font-size: 0.95rem;" oninput="updatePoster()">Trace along the path with your finger</textarea>
+          <div style="font-size: 0.76rem; color: #7F7366; margin-top: 3px;">Supports HTML tags (e.g. <code>&lt;br&gt;</code>) or Enter for line breaks</div>
         </div>
 
-        <div>
+        <div style="margin-top: 8px;">
           <label for="selectSubtitleFont">Subtitle Font:</label>
           <select id="selectSubtitleFont" onchange="updatePoster()">
             <option value="var(--font-patrick)">Patrick Hand (Handwritten - like original poster)</option>
@@ -485,8 +493,12 @@
         <div class="section-title">🏷️ Section Heading (Optional)</div>
         
         <div>
-          <label for="inputSectionHeading">Section Text:</label>
-          <input type="text" id="inputSectionHeading" value="INFINITY BREATHING" oninput="updatePoster()" />
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <label for="inputSectionHeading" style="margin: 0; font-weight: 700;">Section Text:</label>
+            <button type="button" class="btn-pill" style="padding: 2px 8px; font-size: 0.72rem; cursor: pointer;" onclick="insertBreak('inputSectionHeading')">+ &lt;br&gt; Break</button>
+          </div>
+          <textarea id="inputSectionHeading" rows="2" style="resize: vertical; font-family: inherit; font-size: 0.95rem;" oninput="updatePoster()">INFINITY BREATHING</textarea>
+          <div style="font-size: 0.76rem; color: #7F7366; margin-top: 3px;">Supports HTML tags (e.g. <code>&lt;br&gt;</code>) or Enter for line breaks</div>
         </div>
 
         <div class="range-group">
@@ -655,6 +667,22 @@
       document.getElementById('btnRatioLandscape').className = `btn-pill ${ratio === 'landscape' ? 'active' : ''}`;
     }
 
+    // Insert <br> Tag into specified input/textarea
+    function insertBreak(inputId) {
+      const el = document.getElementById(inputId);
+      if (!el) return;
+      const start = el.selectionStart !== undefined ? el.selectionStart : el.value.length;
+      const end = el.selectionEnd !== undefined ? el.selectionEnd : el.value.length;
+      const val = el.value;
+      el.value = val.substring(0, start) + '<br>' + val.substring(end);
+      const newPos = start + 4;
+      if (el.setSelectionRange) {
+        el.setSelectionRange(newPos, newPos);
+      }
+      el.focus();
+      updatePoster();
+    }
+
     // Quick Templates
     function loadTemplate(key, btn) {
       document.querySelectorAll('.template-pill').forEach(b => b.classList.remove('active'));
@@ -673,13 +701,13 @@
         document.getElementById('selectPalette').value = 'posterOriginal';
         currentImageSrc = '/assets/posters/breathe with me.jpg';
       } else if (key === 'feelings') {
-        document.getElementById('inputTitle').value = 'HOW AM I FEELING RIGHT NOW?';
+        document.getElementById('inputTitle').value = 'HOW AM I FEELING<br>RIGHT NOW?';
         document.getElementById('inputSubtitle').value = 'Point to the face that matches what you feel inside';
         document.getElementById('inputSectionHeading').value = 'TODAY I FEEL...';
         document.getElementById('selectPalette').value = 'emotions';
         currentImageSrc = '/assets/faces/happy.png';
       } else if (key === 'toolbox') {
-        document.getElementById('inputTitle').value = 'MY CALM DOWN TOOLBOX';
+        document.getElementById('inputTitle').value = 'MY CALM DOWN<br>TOOLBOX';
         document.getElementById('inputSubtitle').value = 'Pick one thing to try with your body';
         document.getElementById('inputSectionHeading').value = 'TAKE A DEEP RESET';
         document.getElementById('selectPalette').value = 'warm';
@@ -691,7 +719,7 @@
         document.getElementById('selectPalette').value = 'emotions';
         currentImageSrc = '/assets/faces/calm.png';
       } else if (key === 'needs') {
-        document.getElementById('inputTitle').value = 'WHAT DO I NEED RIGHT NOW?';
+        document.getElementById('inputTitle').value = 'WHAT DO I NEED<br>RIGHT NOW?';
         document.getElementById('inputSubtitle').value = 'Point to what will help your heart feel better';
         document.getElementById('inputSectionHeading').value = 'I WOULD LIKE...';
         document.getElementById('selectPalette').value = 'duo';
@@ -704,8 +732,8 @@
 
     // Update Live Poster Elements
     function updatePoster() {
-      // 1. Rainbow Title
-      const rawTitle = document.getElementById('inputTitle').value.toUpperCase();
+      // 1. Rainbow Title with HTML tag & line break support
+      const rawTitleInput = document.getElementById('inputTitle').value;
       const paletteKey = document.getElementById('selectPalette').value;
       const colors = PALETTES[paletteKey];
       const titleSize = document.getElementById('rangeTitleSize').value;
@@ -720,21 +748,39 @@
       titleEl.style.fontFamily = 'var(--font-fredoka)';
       titleEl.style.fontWeight = '800';
 
+      // Normalize breaks while trimming whitespace around breaks so lines center cleanly
+      const normalizedTitle = rawTitleInput.replace(/\s*(<br\s*\/?>|\r?\n)\s*/gi, '<br/>');
+
+      // Tokenize by HTML tags (<...>)
+      const tokens = normalizedTitle.split(/(<[^>]+>)/g);
       let titleHtml = '';
       let colorIdx = 0;
-      for (let i = 0; i < rawTitle.length; i++) {
-        const char = rawTitle[i];
-        if (char === ' ') {
-          titleHtml += '&nbsp;';
+
+      tokens.forEach(token => {
+        if (!token) return;
+        if (/^<br\s*\/?>$/i.test(token)) {
+          titleHtml += '<br/>';
+        } else if (/^<[^>]+>$/.test(token)) {
+          // Pass-through other HTML tags (<b>, <i>, <span>, etc.)
+          titleHtml += token;
         } else {
-          const col = colors[colorIdx % colors.length];
-          titleHtml += `<span style="color: ${col};">${char}</span>`;
-          colorIdx++;
+          // Visible characters - uppercase & color each letter
+          const upperText = token.toUpperCase();
+          for (let i = 0; i < upperText.length; i++) {
+            const char = upperText[i];
+            if (char === ' ') {
+              titleHtml += '&nbsp;';
+            } else {
+              const col = colors[colorIdx % colors.length];
+              titleHtml += `<span style="color: ${col};">${char}</span>`;
+              colorIdx++;
+            }
+          }
         }
-      }
+      });
       titleEl.innerHTML = titleHtml;
 
-      // 2. Subtitle
+      // 2. Subtitle (HTML tags & line breaks supported)
       const rawSub = document.getElementById('inputSubtitle').value;
       const subFont = document.getElementById('selectSubtitleFont').value;
       const subSize = document.getElementById('rangeSubSize').value;
@@ -743,21 +789,21 @@
       document.getElementById('labelSubSize').innerText = `${subSize}px`;
 
       const subEl = document.getElementById('posterSubtitle');
-      subEl.innerText = rawSub;
+      subEl.innerHTML = rawSub.replace(/\s*(<br\s*\/?>|\r?\n)\s*/gi, '<br/>');
       subEl.style.fontFamily = subFont;
       subEl.style.fontSize = `${subSize}px`;
       subEl.style.color = subColor;
       subEl.style.display = rawSub.trim() ? 'block' : 'none';
 
-      // 3. Section Heading
-      const rawHead = document.getElementById('inputSectionHeading').value.toUpperCase();
+      // 3. Section Heading (HTML tags & line breaks supported)
+      const rawHead = document.getElementById('inputSectionHeading').value;
       const headSize = document.getElementById('rangeHeadSize').value;
       const headColor = document.getElementById('inputHeadingColor').value;
 
       document.getElementById('labelHeadSize').innerText = `${headSize}px`;
 
       const headEl = document.getElementById('posterHeading');
-      headEl.innerText = rawHead;
+      headEl.innerHTML = rawHead.toUpperCase().replace(/\s*(<BR\s*\/?>|\r?\n)\s*/gi, '<br/>');
       headEl.style.fontSize = `${headSize}px`;
       headEl.style.color = headColor;
       headEl.style.display = rawHead.trim() ? 'block' : 'none';
@@ -781,11 +827,11 @@
 
       const footerText = document.getElementById('inputFooterNote').value;
       const footerEl = document.getElementById('posterFooter');
-      footerEl.innerText = footerText;
+      footerEl.innerHTML = footerText.replace(/\s*(<br\s*\/?>|\r?\n)\s*/gi, '<br/>');
       footerEl.style.display = footerText.trim() ? 'block' : 'none';
     }
 
-    // Export as High-Res 300 DPI PNG
+    // Export as High-Res 300 DPI PNG (Multiline supported)
     function exportPng() {
       const poster = document.getElementById('posterCanvas');
       const canvas = document.createElement('canvas');
@@ -802,8 +848,8 @@
       ctx.fillStyle = document.getElementById('selectPaperBg').value;
       ctx.fillRect(0, 0, w, h);
 
-      // 2. Draw Title
-      const rawTitle = document.getElementById('inputTitle').value.toUpperCase();
+      // 2. Draw Title (Line-by-line)
+      const rawTitleInput = document.getElementById('inputTitle').value;
       const paletteKey = document.getElementById('selectPalette').value;
       const colors = PALETTES[paletteKey];
       const titleSize = Number(document.getElementById('rangeTitleSize').value);
@@ -812,51 +858,76 @@
       ctx.font = `800 ${titleSize}px Fredoka, sans-serif`;
       ctx.textBaseline = 'top';
 
-      // Measure total title width
-      let totalTitleW = 0;
-      for (let i = 0; i < rawTitle.length; i++) {
-        if (rawTitle[i] === ' ') totalTitleW += titleSize * 0.45;
-        else totalTitleW += ctx.measureText(rawTitle[i]).width + titleSpace;
-      }
-
-      let curX = (w - totalTitleW) / 2;
+      const titleLines = rawTitleInput.split(/<br\s*\/?>|\r?\n/gi);
       let curY = 40;
       let colorIdx = 0;
 
-      for (let i = 0; i < rawTitle.length; i++) {
-        const char = rawTitle[i];
-        if (char === ' ') {
-          curX += titleSize * 0.45;
-        } else {
-          ctx.fillStyle = colors[colorIdx % colors.length];
-          ctx.fillText(char, curX, curY);
-          curX += ctx.measureText(char).width + titleSpace;
-          colorIdx++;
+      titleLines.forEach(lineStr => {
+        const cleanLine = lineStr.replace(/<[^>]+>/g, '').trim().toUpperCase();
+        if (!cleanLine) {
+          curY += titleSize * 0.5;
+          return;
         }
-      }
 
-      curY += titleSize * 1.25;
+        let totalTitleW = 0;
+        for (let i = 0; i < cleanLine.length; i++) {
+          if (cleanLine[i] === ' ') totalTitleW += titleSize * 0.45;
+          else totalTitleW += ctx.measureText(cleanLine[i]).width + titleSpace;
+        }
 
-      // 3. Draw Subtitle
+        let curX = (w - totalTitleW) / 2;
+        for (let i = 0; i < cleanLine.length; i++) {
+          const char = cleanLine[i];
+          if (char === ' ') {
+            curX += titleSize * 0.45;
+          } else {
+            ctx.fillStyle = colors[colorIdx % colors.length];
+            ctx.fillText(char, curX, curY);
+            curX += ctx.measureText(char).width + titleSpace;
+            colorIdx++;
+          }
+        }
+        curY += titleSize * 1.15;
+      });
+
+      curY += 12;
+
+      // 3. Draw Subtitle (Line-by-line)
       const rawSub = document.getElementById('inputSubtitle').value;
       if (rawSub.trim()) {
         const subSize = Number(document.getElementById('rangeSubSize').value);
         ctx.font = `400 ${subSize}px "Patrick Hand", cursive`;
         ctx.fillStyle = document.getElementById('inputSubtitleColor').value;
         ctx.textAlign = 'center';
-        ctx.fillText(rawSub, w / 2, curY);
-        curY += subSize * 1.5;
+
+        const subLines = rawSub.split(/<br\s*\/?>|\r?\n/gi);
+        subLines.forEach(sLine => {
+          const cleanSub = sLine.replace(/<[^>]+>/g, '').trim();
+          if (cleanSub) {
+            ctx.fillText(cleanSub, w / 2, curY);
+            curY += subSize * 1.35;
+          }
+        });
+        curY += 14;
       }
 
-      // 4. Draw Section Heading
-      const rawHead = document.getElementById('inputSectionHeading').value.toUpperCase();
+      // 4. Draw Section Heading (Line-by-line)
+      const rawHead = document.getElementById('inputSectionHeading').value;
       if (rawHead.trim()) {
         const headSize = Number(document.getElementById('rangeHeadSize').value);
         ctx.font = `800 ${headSize}px Fredoka, sans-serif`;
         ctx.fillStyle = document.getElementById('inputHeadingColor').value;
         ctx.textAlign = 'center';
-        ctx.fillText(rawHead, w / 2, curY);
-        curY += headSize * 1.4;
+
+        const headLines = rawHead.split(/<br\s*\/?>|\r?\n/gi);
+        headLines.forEach(hLine => {
+          const cleanHead = hLine.replace(/<[^>]+>/g, '').trim().toUpperCase();
+          if (cleanHead) {
+            ctx.fillText(cleanHead, w / 2, curY);
+            curY += headSize * 1.35;
+          }
+        });
+        curY += 14;
       }
 
       // 5. Draw Image
@@ -870,15 +941,16 @@
       }
 
       // Download
+      const safeTitle = rawTitleInput.replace(/<[^>]+>/g, ' ').replace(/\s+/g, '_').slice(0, 20).replace(/[^a-z0-9_]/gi, '').toLowerCase();
       const link = document.createElement('a');
-      link.download = `${rawTitle.slice(0, 15).replace(/[^a-z0-9]/gi, '_').toLowerCase()}_poster.png`;
+      link.download = `${safeTitle || 'poster'}.png`;
       link.href = canvas.toDataURL('image/png');
       link.click();
     }
 
-    // Export as Scalable Vector SVG
+    // Export as Scalable Vector SVG (Multiline supported)
     function exportSvg() {
-      const rawTitle = document.getElementById('inputTitle').value.toUpperCase();
+      const rawTitleInput = document.getElementById('inputTitle').value;
       const paletteKey = document.getElementById('selectPalette').value;
       const colors = PALETTES[paletteKey];
       const titleSize = Number(document.getElementById('rangeTitleSize').value);
@@ -889,30 +961,74 @@
       const subSize = Number(document.getElementById('rangeSubSize').value);
       const subColor = document.getElementById('inputSubtitleColor').value;
 
-      const rawHead = document.getElementById('inputSectionHeading').value.toUpperCase();
+      const rawHead = document.getElementById('inputSectionHeading').value;
       const headSize = Number(document.getElementById('rangeHeadSize').value);
       const headColor = document.getElementById('inputHeadingColor').value;
 
       const width = 800;
       const height = currentRatio === 'square' ? 800 : currentRatio === 'landscape' ? 600 : 1130;
 
-      let currentX = 80;
       let currentY = 90;
       let colorIdx = 0;
-
       let titleXml = '';
-      for (let i = 0; i < rawTitle.length; i++) {
-        const char = rawTitle[i];
-        if (char === ' ') {
-          currentX += titleSize * 0.45;
-        } else {
-          titleXml += `<text x="${currentX}" y="${currentY}" fill="${colors[colorIdx % colors.length]}" font-family="Fredoka, sans-serif" font-size="${titleSize}" font-weight="800">${char}</text>\n    `;
-          currentX += titleSize * 0.65 + titleSpace;
-          colorIdx++;
+
+      const titleLines = rawTitleInput.split(/<br\s*\/?>|\r?\n/gi);
+      titleLines.forEach(lineStr => {
+        const cleanLine = lineStr.replace(/<[^>]+>/g, '').trim().toUpperCase();
+        if (!cleanLine) {
+          currentY += titleSize * 0.5;
+          return;
         }
+
+        let lineW = 0;
+        for (let i = 0; i < cleanLine.length; i++) {
+          if (cleanLine[i] === ' ') lineW += titleSize * 0.45;
+          else lineW += titleSize * 0.65 + titleSpace;
+        }
+        let curX = (width - lineW) / 2;
+
+        for (let i = 0; i < cleanLine.length; i++) {
+          const char = cleanLine[i];
+          if (char === ' ') {
+            curX += titleSize * 0.45;
+          } else {
+            const safeChar = char === '&' ? '&amp;' : char === '<' ? '&lt;' : char === '>' ? '&gt;' : char;
+            titleXml += `<text x="${curX}" y="${currentY}" fill="${colors[colorIdx % colors.length]}" font-family="Fredoka, sans-serif" font-size="${titleSize}" font-weight="800">${safeChar}</text>\n    `;
+            curX += titleSize * 0.65 + titleSpace;
+            colorIdx++;
+          }
+        }
+        currentY += titleSize * 1.15;
+      });
+
+      currentY += 12;
+
+      let subXml = '';
+      if (rawSub.trim()) {
+        const subLines = rawSub.split(/<br\s*\/?>|\r?\n/gi);
+        subLines.forEach(sLine => {
+          const cleanSub = sLine.replace(/<[^>]+>/g, '').trim();
+          if (cleanSub) {
+            const safeSub = cleanSub.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            subXml += `<text x="${width/2}" y="${currentY}" text-anchor="middle" fill="${subColor}" font-family="'Patrick Hand', cursive" font-size="${subSize}">${safeSub}</text>\n  `;
+            currentY += subSize * 1.35;
+          }
+        });
+        currentY += 14;
       }
 
-      currentY += subSize * 1.5;
+      let headXml = '';
+      if (rawHead.trim()) {
+        const headLines = rawHead.split(/<br\s*\/?>|\r?\n/gi);
+        headLines.forEach(hLine => {
+          const cleanHead = hLine.replace(/<[^>]+>/g, '').trim().toUpperCase();
+          if (cleanHead) {
+            const safeHead = cleanHead.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            headXml += `<text x="${width/2}" y="${currentY}" text-anchor="middle" fill="${headColor}" font-family="Fredoka, sans-serif" font-size="${headSize}" font-weight="800">${safeHead}</text>\n  `;
+            currentY += headSize * 1.35;
+          }
+        });
+      }
 
       const svgContent = `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}">
@@ -922,15 +1038,16 @@
     ${titleXml}
   </g>
   <!-- Subtitle -->
-  ${rawSub ? `<text x="${width/2}" y="${currentY}" text-anchor="middle" fill="${subColor}" font-family="'Patrick Hand', cursive" font-size="${subSize}">${rawSub}</text>` : ''}
+  ${subXml}
   <!-- Section Heading -->
-  ${rawHead ? `<text x="${width/2}" y="${currentY + headSize * 1.5}" text-anchor="middle" fill="${headColor}" font-family="Fredoka, sans-serif" font-size="${headSize}" font-weight="800">${rawHead}</text>` : ''}
+  ${headXml}
 </svg>`;
 
+      const safeTitle = rawTitleInput.replace(/<[^>]+>/g, ' ').replace(/\s+/g, '_').slice(0, 20).replace(/[^a-z0-9_]/gi, '').toLowerCase();
       const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
-      link.download = `${rawTitle.slice(0, 15).replace(/[^a-z0-9]/gi, '_').toLowerCase()}_poster.svg`;
+      link.download = `${safeTitle || 'poster'}.svg`;
       link.click();
     }
 
