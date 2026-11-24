@@ -303,7 +303,7 @@
       height: 100%;
       max-height: 100%;
       object-fit: contain;
-      filter: drop-shadow(0 4px 16px rgba(0,0,0,0.06));
+      filter: none;
       transition: all 0.2s ease;
     }
 
@@ -434,6 +434,8 @@
           <button class="btn-pill template-pill" onclick="loadTemplate('ground', this)">Find Your Ground</button>
           <button class="btn-pill template-pill" onclick="loadTemplate('needs', this)">What Do I Need?</button>
           <button class="btn-pill template-pill" onclick="loadTemplate('caregiver', this)">Caregiver Guide</button>
+          <button class="btn-pill template-pill" onclick="loadTemplate('safespace', this)">🌈 Safe Space</button>
+          <button class="btn-pill template-pill" onclick="loadTemplate('sayitwithme', this)">💬 Say It With Me</button>
         </div>
       </div>
 
@@ -702,20 +704,48 @@
         subSize: 22,
         headSize: 24,
         imgScale: 98,
-        bodySrc: '/assets/posters/body/caregiver-body.png',
+        bodySrc: '/assets/posters/body/caregiver-guid-img-only.png',
         fullSrc: '/assets/posters/caregiver guide.jpg'
+      },
+      safespace: {
+        title: 'THIS IS A<br>SAFE SPACE<br>TO BE WHO<br>YOU ARE',
+        subtitle: '',
+        heading: '',
+        palette: 'posterOriginal',
+        paperBg: '#FFFFFF',
+        titleSize: 52,
+        subSize: 22,
+        headSize: 24,
+        imgScale: 98,
+        bodySrc: '/assets/posters/body/safe-space-img-only.png',
+        fullSrc: '/assets/posters/safe space.png'
+      },
+      sayitwithme: {
+        title: 'SAY IT WITH ME...',
+        subtitle: 'Take a gentle breath and repeat after me',
+        heading: '',
+        palette: 'posterOriginal',
+        paperBg: '#FFFFFF',
+        titleSize: 52,
+        subSize: 22,
+        headSize: 24,
+        imgScale: 98,
+        bodySrc: '/assets/posters/body/say-it-with-me-img-only.png',
+        fullSrc: '/assets/posters/say it with me.png'
       }
     };
 
     // Built-in library assets categorized
     const LIBRARY_ASSETS = [
       // Core Poster Artwork Bodies
-      { id: 'breathe-body', category: 'body', name: 'Breathe Paths (Turtle & Bunny)', src: '/assets/posters/body/breathe-body.png' },
+      { id: 'breathe-body', category: 'body', name: 'Breathe Paths (Turtle & Bunny)', src: '/assets/posters/body/breathe-with-me-img-only.png' },
       { id: 'feelings-body', category: 'body', name: 'Feelings Grid (8 Emotions)', src: '/assets/posters/body/feelings-body.png' },
-      { id: 'toolbox-body', category: 'body', name: 'Calm Down Toolbox (4 Body Resets)', src: '/assets/posters/body/toolbox-body.png' },
-      { id: 'ground-body', category: 'body', name: '5-4-3-2-1 Senses Grounding', src: '/assets/posters/body/ground-body.png' },
-      { id: 'needs-body', category: 'body', name: 'Heart Needs (4 Need Cards)', src: '/assets/posters/body/needs-body.png' },
-      { id: 'caregiver-body', category: 'body', name: 'Caregiver Guidance Sections', src: '/assets/posters/body/caregiver-body.png' },
+      { id: 'toolbox-body', category: 'body', name: 'Calm Down Toolbox (4 Body Resets)', src: '/assets/posters/body/calm-down-toolbox-img-only.png' },
+      { id: 'ground-body', category: 'body', name: '5-4-3-2-1 Senses Grounding', src: '/assets/posters/body/find-your-ground-img-only.png' },
+      { id: 'needs-body', category: 'body', name: 'Heart Needs (4 Need Cards)', src: '/assets/posters/body/what-do-i-need-img-only.png' },
+      { id: 'caregiver-body', category: 'body', name: 'Caregiver Guidance Sections', src: '/assets/posters/body/caregiver-guid-img-only.png' },
+      { id: 'safespace-body', category: 'body', name: 'Safe Space Friends (5 Characters)', src: '/assets/posters/body/safe-space-img-only.png' },
+      { id: 'sayitwithme-body', category: 'body', name: 'Affirmation Pills (6 Statements)', src: '/assets/posters/body/say-it-with-me-img-only.png' },
 
       // Full Complete Official Posters
       { id: 'full-breathe', category: 'full', name: 'Full: Breathe With Me', src: '/assets/posters/breathe with me.jpg' },
@@ -724,6 +754,8 @@
       { id: 'full-ground', category: 'full', name: 'Full: Find Your Ground', src: '/assets/posters/find your ground.jpg' },
       { id: 'full-needs', category: 'full', name: 'Full: What Do I Need?', src: '/assets/posters/what do i need.jpg' },
       { id: 'full-caregiver', category: 'full', name: 'Full: Caregiver Guide', src: '/assets/posters/caregiver guide.jpg' },
+      { id: 'full-safespace', category: 'full', name: 'Full: Safe Space Poster', src: '/assets/posters/safe space.png' },
+      { id: 'full-sayitwithme', category: 'full', name: 'Full: Say It With Me Poster', src: '/assets/posters/say it with me.png' },
 
       // Individual Emotion Faces
       { id: 'happy', category: 'face', name: 'Happy Face', src: '/assets/faces/happy.png' },
@@ -737,7 +769,7 @@
     ];
 
     let currentTemplateKey = 'breathe';
-    let currentImageSrc = '/assets/posters/body/breathe-body.png';
+    let currentImageSrc = '/assets/posters/body/breathe-with-me-img-only.png';
     let currentRatio = 'a4';
     let currentAssetFilter = 'all';
     let posterMode = 'editable'; // 'editable' or 'original'
@@ -912,6 +944,7 @@
         if (!token) return;
         if (/^<br\s*\/?>$/i.test(token)) {
           titleHtml += '<br/>';
+          colorIdx = 0;
         } else if (/^<[^>]+>$/.test(token)) {
           titleHtml += token;
         } else {
@@ -1030,6 +1063,7 @@
         let colorIdx = 0;
 
         titleLines.forEach(lineStr => {
+          let colorIdx = 0;
           const cleanLine = lineStr.replace(/<[^>]+>/g, '').trim().toUpperCase();
           if (!cleanLine) {
             curY += titleSize * 0.5;
@@ -1169,6 +1203,7 @@
       if (rawTitleInput.trim()) {
         const titleLines = rawTitleInput.split(/<br\s*\/?>|\r?\n/gi);
         titleLines.forEach(lineStr => {
+          let colorIdx = 0;
           const cleanLine = lineStr.replace(/<[^>]+>/g, '').trim().toUpperCase();
           if (!cleanLine) {
             currentY += titleSize * 0.5;
